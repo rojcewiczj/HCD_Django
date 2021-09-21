@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,22 +11,18 @@
 </head>
 <body>
     <main>
-        <h1>create a new question</h1>
-        <form action="{% url 'build_question_view' program_id %}" method="POST">
-            {% csrf_token %}
-            <ul>
-            {{ form.as_ul }}
-            </ul>
-            <div id ="registration-actions">
-                <button>Submit</button>
-                <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
+        {% for q in questions_submitted %}
+            <div>
+                <p>QUESTION: {{q.question}}</p>
+                <p>ANSWER: {{q.answer}}</p>
             </div>
-            
-        </form>
-       
-        
-
+            <br>
+        {% endfor %}
+        <div id ="registration-actions">
+            <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
+            <a href="/form_builder/" class="btn">return to programs</a>
+        </div>
     </main>
-    
-</body>
+            
+    </body>
 </html>

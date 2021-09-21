@@ -36,27 +36,35 @@ def build_question_success(request, program_id):
 
 def fill_out_form(request, program_id): 
     forms = []
-    if request.method == "GET":
-        questions = Question.objects.filter(programs = program_id)
-        for question in questions:
-            question_form = Fill_question_form(instance = question)
-            print(question_form)
-            forms.append(question_form)
-        return render(request, 'form_builder/fill_out_form.html', {
-            'forms': forms,
-            'program_id': program_id
-        })
-    elif request.method == "POST":
+    questions = Question.objects.filter(programs = program_id)
+    for question in questions:
+        question_form = Fill_question_form(instance = question)
+        forms.append(question_form)
+    if request.method == "POST":
         fill_question_form = Fill_question_form(request.POST)
         if fill_question_form.is_valid():
-            old_question = Question.objects.filter(id = request.POST.id)
-            old_question.delete()
+            old_questions = Question.objects.filter(question = request.POST['question'])
+            for q in old_questions:
+                q.delete()
             edited_question = fill_question_form.save()
             edited_question.programs.add(program_id)
-        return render(request, 'form_builder/fill_out_form.html', {
-            'forms': forms,
-            'program_id': program_id
-        })
+    return render(request, 'form_builder/fill_out_form.html', {
+        'forms': forms,
+        'program_id': program_id
+    })
+
+def view_question_submitted(request, program_id):
+    questions_submitted = []
+    questions = Question.objects.filter(programs = program_id)
+    for question in questions:
+        if question.answer is not None:
+            questions_submitted.append(question)
+    return render(request, 'form_builder/view_question_submitted.html',{
+        'questions_submitted': questions_submitted,
+        'program_id': program_id
+    } )
+
+
 
 
 
