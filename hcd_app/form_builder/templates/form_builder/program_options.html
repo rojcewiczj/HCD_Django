@@ -13,8 +13,8 @@
 <body>
     <main>
         <h1>Do you want to create a new question for this program?</h1>
-       <a href="{% url 'build_question_view' %}" class="btn">Create a question</a> 
-       
+       <a href="{% url 'build_question_view' program_id %}" class="btn">Create a question</a> 
+       <a href="{% url 'fill_question_view' program_id %}" class="btn">answer questions</a> 
         
 
     </main>

@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,20 +11,14 @@
 </head>
 <body>
     <main>
-        <h1>create a new question</h1>
-        <form action="{% url 'build_question_view' program_id %}" method="POST">
-            {% csrf_token %}
-            <ul>
-            {{ form.as_ul }}
-            </ul>
-            <div id ="registration-actions">
-                <button>Submit</button>
-            </div>
-        </form>
-       
-        
+        <h3>Thank you for creating a new question!</h3>
+        <div>
+            <p>Would you like to create another question for this program?</p>
+            <ul><a href="/form_builder/build_question/{{program_id}}" class="btn">yes!</a></ul>
+            <ul><a href="/form_builder/" class="btn">return to programs</a></ul></button>
+        </div>
 
     </main>
-    
-</body>
+            
+    </body>
 </html>
