@@ -15,9 +15,8 @@
         <h1>create a new question</h1>
         <form action="{% url 'build_question_view' program_id %}" method="POST">
             {% csrf_token %}
-            <ul>
             {{ form.as_ul }}
-            </ul>
+            
             <div id ="registration-actions">
                 <button>Submit</button>
                 <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
