@@ -13,7 +13,7 @@
 <body>
     <main>
         <h1>create a new answer option for this multiple choice question</h1>
-        <form action="{% url 'build_question_select_choices' question_id %}" method="POST">
+        <form action="{% url 'build_question_select_choices' program_id question_id %}" method="POST">
             {% csrf_token %}
             <label>question:</label>
             <p>{{question}}</p>

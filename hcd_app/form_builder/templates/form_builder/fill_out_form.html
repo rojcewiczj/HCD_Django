@@ -13,12 +13,13 @@
 <body>
     <main>
            <h1>answer questions</h1>
-        {% for question_form in forms %}
+        {% for key, value in forms.items %}
      
         <form action="{% url 'fill_out_form' program_id %}" method="POST">
             {% csrf_token %}
             <ul>
-            {{ question_form.as_ul }}
+            <p></p>
+            {{ value.as_ul }}
             </ul>
             <div id ="registration-actions">
                 <button>Next</button>

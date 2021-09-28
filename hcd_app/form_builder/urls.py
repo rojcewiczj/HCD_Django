@@ -6,7 +6,7 @@ urlpatterns = [
     path('form_builder/program_options/<program_id>', views.program_options, name="program_options"),
     path('form_builder/build_question/<program_id>', views.build_question_view, name="build_question_view"),
     path('form_builder/fill_question/<program_id>', views.fill_out_form, name="fill_out_form"),
-    path('form_builder/select_choices/<question_id>', views.build_question_select_choices, name="build_question_select_choices" ),
+    path('form_builder/select_choices/<program_id>/<question_id>', views.build_question_select_choices, name="build_question_select_choices" ),
     path('form_builder/build_question_success/<program_id>', views.build_question_success, name="build_question_success"),
     path('form_builder/view_question_submitted/<program_id>', views.view_question_submitted, name="view_question_submitted")
      ##our-domain.com/form_builder/<program_name>

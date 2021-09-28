@@ -1,27 +1,26 @@
 from django import forms
+from django.db.models import query
 from .models import Question
 
-class Multiple_choice_form(forms.ModelForm):
-    
-    def __init__(self, answer_format):
-        def get_options(self, answer_format):
-            answer_options = []
-            opts = answer_format.split(" ")
-            for opt in opts:
-                answer_options.append((opt, opt))
 
-        self.answer = forms.MultipleChoiceField(choices = get_options(answer_format))
-    
-    
-    # answer_options = []
+def Multiple_choice_helper(question):   
+    options = []
+    opts = question.answer_format[1:].split(" ")
+    for opt in opts:
+        options.append((opt, opt))
    
-    # options = []
-    # string_format = str(Question.answer_format)
-    # options = string_format.split(" ")
-    # for option in options:
-    #     answer_options.append((option,option))
-    # answer = forms.MultipleChoiceField(choices= answer_options)
 
-    class Meta:
-        model = Question
-        fields = ['id','question','answer']
+    class Multiple_choice_form(forms.ModelForm):
+        
+        answer = forms.MultipleChoiceField(
+            
+            choices= options
+        )
+        
+        
+        
+        class Meta:
+            model = Question
+            fields = ['question','answer']
+
+    return Multiple_choice_form(instance=question)
