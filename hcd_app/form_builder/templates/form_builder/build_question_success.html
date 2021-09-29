@@ -7,17 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
-    <link rel="stylesheet" href="{% static 'form_builder/styles/question.css' %}">
+    <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
 </head>
 <body>
     <main>
+        <article>
         <h3>Thank you for creating a new question!</h3>
         <div>
             <p>Would you like to create another question for this program?</p>
             <ul><a href="/form_builder/build_question/{{program_id}}" class="btn">yes!</a></ul>
             <ul><a href="/form_builder/" class="btn">return to programs</a></ul></button>
         </div>
-
+        </article>
     </main>
             
     </body>

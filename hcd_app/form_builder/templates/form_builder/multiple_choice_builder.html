@@ -8,10 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
-    <link rel="stylesheet" href="{% static 'form_builder/styles/question.css' %}">
+    <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
+    
 </head>
 <body>
     <main>
+        <article>
         <h1>create a new answer option for this multiple choice question</h1>
         <form action="{% url 'build_question_select_choices' program_id question_id %}" method="POST">
             {% csrf_token %}
@@ -23,7 +25,7 @@
                 <button>Submit</button>
                 <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
             </div>
-
+        </article>
     </main>
     
 </body>

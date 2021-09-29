@@ -26,7 +26,7 @@ def build_question_view(request, program_id):
         if build_question_form.is_valid():
             new_question = build_question_form.save()
             new_question.programs.add(program_id)
-            print(new_question.id)
+            
             if new_question.answer_format[2:-2] == "multiple_choice":
                 return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
             return redirect('build_question_success', program_id=program_id)
@@ -48,7 +48,6 @@ def build_question_select_choices(request, program_id, question_id):
             new_options_added.answer_format = ""
         
         new_options_added.answer_format += f" {request.POST['option_to_add']}"
-        print(new_options_added.answer_format)
         new_options_added.save()
 
         answer_option_form = Answer_option_form(question_to_edit)
@@ -75,22 +74,24 @@ def fill_out_form(request, program_id):
         new_question.answer = request.POST['answer']
         question_to_edit.delete()
         new_question.save()
-        print(new_question.answer)
+        new_question.programs.add(program_id)
+        
 
     forms = {}   
     questions = Question.objects.filter(programs = program_id)
     for question in questions:
-        a_format = question.answer_format
-        question_form = ""
-        if a_format == "['text_field']":
-            question_form = Text_field_form(instance = question)
-        elif a_format == "['yes_or_no']":
-            question_form = Yes_or_no_form(instance = question)
-            
-        else:
-            question_form = Multiple_choice_helper(question)
-            
-        forms[f'{question.id}'] = question_form
+        if question.answer == None:
+            a_format = question.answer_format
+            question_form = ""
+            if a_format == "['text_field']":
+                question_form = Text_field_form(instance = question)
+            elif a_format == "['yes_or_no']":
+                question_form = Yes_or_no_form(instance = question)
+                
+            else:
+                question_form = Multiple_choice_helper(question)
+                
+            forms[f'{question.id}'] = question_form
     
     
     
@@ -102,27 +103,20 @@ def fill_out_form(request, program_id):
 
 
 
-
 def view_question_submitted(request, program_id):
     questions_submitted = []
-    questions = Question.objects.filter(programs = program_id)
+    questions = Question.objects.all()
     for question in questions:
-        if question.answer is not None:
-            questions_submitted.append(question)
+        for program in question.programs.all():
+            if str(program.id) == program_id and question.answer is not None:
+                questions_submitted.append(question)
     return render(request, 'form_builder/view_question_submitted.html',{
         'questions_submitted': questions_submitted,
         'program_id': program_id
     } )
 
 
-
-
-
-
-
     
-    
-   
 
 def program_options(request, program_id):
     

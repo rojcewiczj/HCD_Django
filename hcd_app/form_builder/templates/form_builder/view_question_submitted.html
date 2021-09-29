@@ -7,21 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
-    <link rel="stylesheet" href="{% static 'form_builder/styles/question.css' %}">
+    <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
+   
 </head>
 <body>
     <main>
+        <article>
         {% for q in questions_submitted %}
+        <article>
             <div>
                 <p>QUESTION: {{q.question}}</p>
                 <p>ANSWER: {{q.answer}}</p>
             </div>
             <br>
+        </article>
         {% endfor %}
         <div id ="registration-actions">
             <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
             <a href="/form_builder/" class="btn">return to programs</a>
         </div>
+    </article>
     </main>
             
     </body>

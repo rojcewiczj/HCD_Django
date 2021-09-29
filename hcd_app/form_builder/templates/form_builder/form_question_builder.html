@@ -8,10 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
-    <link rel="stylesheet" href="{% static 'form_builder/styles/question.css' %}">
+    <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
 </head>
 <body>
     <main>
+        <article>
         <h1>create a new question</h1>
         <form action="{% url 'build_question_view' program_id %}" method="POST">
             {% csrf_token %}
@@ -24,7 +25,7 @@
             
         </form>
        
-        
+        </article>
 
     </main>
     

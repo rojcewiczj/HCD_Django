@@ -8,13 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
-    <link rel="stylesheet" href="{% static 'form_builder/styles/question.css' %}">
+    <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
 </head>
 <body>
     <main>
+      
            <h1>answer questions</h1>
         {% for key, value in forms.items %}
-     
+      <article>
         <form action="{% url 'fill_out_form' program_id %}" method="POST">
             {% csrf_token %}
             <ul>
@@ -25,13 +26,14 @@
                 <button>Next</button>
             </div>
         </form>
+    </article>
         {% endfor %}
         <br>
         <div id ="registration-actions">
         <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
         <a href="/form_builder/" class="btn">return to programs</a>
         </div>
-
+  
     </main>
     
 </body>
