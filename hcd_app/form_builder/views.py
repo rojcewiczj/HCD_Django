@@ -6,9 +6,34 @@ from .text_field_form import Text_field_form
 from .yes_or_no_form import Yes_or_no_form
 from .multiple_choice_form import Multiple_choice_helper
 from .answer_option_form import Answer_option_form
+from formtools.wizard.views import SessionWizardView
 
 # Create your views here.
-answer_options = []
+# def getForms():
+#     form_list = [] 
+#     questions = Question.objects.filter(programs = 2)
+#     for question in questions:
+#         if question.answer == None:
+#             a_format = question.answer_format
+#             question_form = ""
+#             if a_format == "['text_field']":
+#                 question_form = Text_field_form(instance = question)
+#             elif a_format == "['yes_or_no']":
+#                 question_form = Yes_or_no_form(instance = question)
+                
+#             else:
+#                 question_form = Multiple_choice_helper(question)
+                
+#             form_list.append(question_form)
+#     return form_list
+
+# class order_wizard(SessionWizardView):
+#     template_name = "form_builder/form_wizard.html"
+#     form_list = getForms()
+#     def done(self, form_list, **kwargs):
+#         return render(self.request, 'done.html', {
+#             'form_data': [form.cleaned_data for form in form_list],
+#         })
 
 def index(request):
     programs = Program.objects.all()
@@ -26,7 +51,6 @@ def build_question_view(request, program_id):
         if build_question_form.is_valid():
             new_question = build_question_form.save()
             new_question.programs.add(program_id)
-            
             if new_question.answer_format[2:-2] == "multiple_choice":
                 return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
             return redirect('build_question_success', program_id=program_id)
@@ -66,40 +90,58 @@ def build_question_success(request, program_id):
     })        
 
 
-def fill_out_form(request, program_id): 
-    
-    if request.method == "POST":
-        question_to_edit = Question.objects.get(question = request.POST["question"])
-        new_question = question_to_edit
-        new_question.answer = request.POST['answer']
-        question_to_edit.delete()
-        new_question.save()
-        new_question.programs.add(program_id)
         
-
-    forms = {}   
-    questions = Question.objects.filter(programs = program_id)
-    for question in questions:
-        if question.answer == None:
-            a_format = question.answer_format
-            question_form = ""
-            if a_format == "['text_field']":
-                question_form = Text_field_form(instance = question)
-            elif a_format == "['yes_or_no']":
-                question_form = Yes_or_no_form(instance = question)
-                
-            else:
-                question_form = Multiple_choice_helper(question)
-                
-            forms[f'{question.id}'] = question_form
+def fill_out_form(request, program_id, current_form , back): 
+    print(type(current_form))
     
+        
+    if request.method == "POST":
+        if back == '0':
+            print("back is 0")
+            current_form_int = int(current_form)
+            current_form_int += 1
+            current_form = str(current_form_int)
+            question_to_edit = Question.objects.get(question = request.POST["question"])
+            id = question_to_edit.id
+            new_question = question_to_edit
+            new_question.answer = request.POST['answer']
+            print(id)
+            question_to_edit.delete()
+            new_question.save()
+            new_question.programs.add(program_id)
+        elif back == '1':
+            print(current_form)
+            current_form_int = int(current_form)
+            current_form_int -= 1
+            print(current_form_int)
+            current_form = str(current_form_int)
+        
+    
+    forms = {}
+
+    questions = Question.objects.filter(programs = program_id)
+    question_ids = [q.id for q in questions]
+    print(question_ids)
+    for i in range(0, len(questions)):
+        a_format = questions[i].answer_format
+        question_form = ""
+        if a_format == "['text_field']":
+            question_form = Text_field_form(instance = questions[i])
+        elif a_format == "['yes_or_no']":
+            question_form = Yes_or_no_form(instance = questions[i])
+                
+        else:
+            question_form = Multiple_choice_helper(questions[i])
+                
+        forms[f'{i}'] = question_form
+        
     
     
     return render(request, 'form_builder/fill_out_form.html', {
-        'forms': forms,
+        'forms' : forms,
+        'current_form' : current_form,
         'program_id': program_id
     })
-
 
 
 

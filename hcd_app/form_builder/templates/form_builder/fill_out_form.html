@@ -9,24 +9,33 @@
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
     <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
+ 
 </head>
 <body>
     <main>
       
            <h1>answer questions</h1>
         {% for key, value in forms.items %}
+        {% if current_form == key %}
       <article>
-        <form action="{% url 'fill_out_form' program_id %}" method="POST">
+        <form action="{% url 'fill_out_form' program_id key 0 %}" method="POST">
             {% csrf_token %}
             <ul>
             <p></p>
             {{ value.as_ul }}
             </ul>
+            {% if key is not "0" %}
+       
+            {% endif %}
             <div id ="registration-actions">
                 <button>Next</button>
             </div>
-        </form>
+        </form> 
+        <form action="{% url 'fill_out_form' program_id key 1 %}" method="POST">{% csrf_token %}
+        <button>Back</button>
+            </form>
     </article>
+        {% endif %}
         {% endfor %}
         <br>
         <div id ="registration-actions">
@@ -35,6 +44,6 @@
         </div>
   
     </main>
-    
+
 </body>
 </html>
