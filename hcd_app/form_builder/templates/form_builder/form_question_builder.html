@@ -1,4 +1,6 @@
 
+
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +13,14 @@
     <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
 </head>
 <body>
+ <div id="nav">
+    <div></div>
+    <div>
+    <a href="{% url 'all-programs'  %}">Home</a>
+    <a href="{% url 'build_question_view' 2 %}"><strong class="nav-active">Resources</strong></a>
+    <a href="{% url 'fill_out_form' 2 0 0 %}">Survey</a>
+</div>
+</div>   
     <main>
         <article>
         <h1>create a new question</h1>

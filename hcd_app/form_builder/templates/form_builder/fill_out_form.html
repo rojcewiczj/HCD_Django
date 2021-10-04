@@ -12,26 +12,40 @@
  
 </head>
 <body>
+    <div id="nav">
+        <div></div>
+        <div>
+        <a href="{% url 'all-programs'  %}">Home</a>
+        <a href="{% url 'build_question_view' 2 %}">Resources</a>
+        <a href="{% url 'fill_out_form' 2 0 0 %}"><strong class="nav-active">Survey</strong></a>
+    </div>
     <main>
       
            <h1>answer questions</h1>
         {% for key, value in forms.items %}
         {% if current_form == key %}
       <article>
-        <form action="{% url 'fill_out_form' program_id key 0 %}" method="POST">
+        <form action="{% url 'fill_out_form' program_id current_form 0 %}" method="POST">
             {% csrf_token %}
             <ul>
             <p></p>
             {{ value.as_ul }}
             </ul>
-            {% if key is not "0" %}
-       
-            {% endif %}
+
+            {% if key == last_form %}
+            <div id ="registration-actions">
+                <button>Submit</button>
+            </div>
+            
+            
+            {% else %}
             <div id ="registration-actions">
                 <button>Next</button>
             </div>
+            {% endif %}
+            
         </form> 
-        <form action="{% url 'fill_out_form' program_id key 1 %}" method="POST">{% csrf_token %}
+        <form action="{% url 'fill_out_form' program_id current_form 1 %}" method="POST">{% csrf_token %}
         <button>Back</button>
             </form>
     </article>
