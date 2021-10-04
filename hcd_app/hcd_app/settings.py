@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'formtools',
     'form_builder',
-    'jquery',
+    'localflavor',
+   
 
 ]
 

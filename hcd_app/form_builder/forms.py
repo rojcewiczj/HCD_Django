@@ -1,11 +1,12 @@
 from django import forms
-from .models import Question
+from .models import Address, Question
 from django.forms.widgets import CheckboxSelectMultiple
 
 answer_format_options = [
     ('text_field', "text field"),
     ('multiple_choice', "multiple choice"),
     ('yes_or_no', "yes or no"),
+    ('address_form', "address form"),
 ]
 
 class Build_question_form(forms.ModelForm):
@@ -73,3 +74,11 @@ class Answer_option_form(forms.Form):
         self.question = new_question.question
         self.option_to_add = forms.CharField(label="add and answer option to the multiple choice", max_length= 50)
 
+class Address_Form(forms.ModelForm):
+    
+
+    class Meta:
+        model = Address
+        fields = ['address_1','address_2','city','state','zip_code', 'build_date']
+
+         

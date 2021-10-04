@@ -1,13 +1,14 @@
 
-from form_builder.models import Program, Question
+from form_builder.models import Program, Question, Address
 from django.shortcuts import render, redirect
+from django.core import serializers
 from .build_question_form import Build_question_form
 from .text_field_form import Text_field_form
 from .yes_or_no_form import Yes_or_no_form
 from .multiple_choice_form import Multiple_choice_helper
 from .answer_option_form import Answer_option_form
 from formtools.wizard.views import SessionWizardView
-
+from .forms import Address_Form
 # Create your views here.
 
 
@@ -31,17 +32,27 @@ def build_question_view(request, program_id):
         build_question_form = Build_question_form(request.POST)
         if build_question_form.is_valid():
             new_question = build_question_form.save()
-            if program.question_order == None:
-                program.question_order = new_question.question
-            else:
-                program.question_order += f"/{new_question.question}"
-       
+            if request.POST['answer_format'] != 'address_form':
+                
+                if program.question_order == None:
+                    program.question_order = new_question.question
+                else:
+                    program.question_order += f"/{new_question.question}"
+            else: 
+                new_address_form = Address_Form()
+                if new_address_form.is_valid():
+                    new_address_form.save()
+
+                if program.question_order == None:
+                    program.question_order = "address_form"
+                else:
+                    program.question_order += f"/address_form"
             
-            program.save()
-            new_question.programs.add(program_id)
-            if new_question.answer_format[2:-2] == "multiple_choice":
-                return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
-            return redirect('build_question_success', program_id=program_id)
+        program.save()
+        new_question.programs.add(program_id)
+        if new_question.answer_format[2:-2] == "multiple_choice":
+            return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
+        return redirect('build_question_success', program_id=program_id)
 
     return render(request, 'form_builder/form_question_builder.html', {
         'form': build_question_form,
@@ -88,16 +99,22 @@ def fill_out_form(request, program_id, current_form , back):
         if back == '1':
             current_form_int -= 1
         elif back == '0':
-            
             current_form_int += 1
-            
-            question_to_edit = Question.objects.get(question = request.POST["question"])
-            id = question_to_edit.id
-            new_question = question_to_edit
-            new_question.answer = request.POST['answer']
-            question_to_edit.delete()
-            new_question.save()
-            new_question.programs.add(program_id)
+            try:
+                question_to_edit = Question.objects.get(question = request.POST["question"]) 
+                id = question_to_edit.id
+                new_question = question_to_edit
+                new_question.answer = request.POST['answer']
+                question_to_edit.delete()
+                new_question.save()
+                new_question.programs.add(program_id)
+            except:
+                address_forms = Address.objects.all()
+                address_form = address_forms[0]
+                address_form.delete()
+                new_address_form = Address_Form(request.POST)
+                new_address_form.save()
+           
         
     current_form = str(current_form_int) 
     question_order = {}
@@ -106,9 +123,10 @@ def fill_out_form(request, program_id, current_form , back):
     for i in range(0, len(question_array)):
         question_order[question_array[i]] = str(i)
     
-
+    
     forms = {}
     questions = Question.objects.filter(programs = program_id)
+    
     question_ids = [q.question for q in questions]
     for q in questions:
         a_format = q.answer_format
@@ -117,7 +135,9 @@ def fill_out_form(request, program_id, current_form , back):
             question_form = Text_field_form(instance = q)
         elif a_format == "['yes_or_no']":
             question_form = Yes_or_no_form(instance = q)
-                
+        elif a_format == "['address_form']":
+            question_form = Address_Form()      
+            q.question = "address_form"
         else:
             question_form = Multiple_choice_helper(q)
                 
@@ -127,7 +147,7 @@ def fill_out_form(request, program_id, current_form , back):
 
     if current_form > last_form:
         return redirect('view_question_submitted', 2)
-
+    
         
     return render(request, 'form_builder/fill_out_form.html', {
         'forms' : forms,
@@ -140,13 +160,18 @@ def fill_out_form(request, program_id, current_form , back):
 
 def view_question_submitted(request, program_id):
     questions_submitted = []
+    
     questions = Question.objects.all()
     for question in questions:
         for program in question.programs.all():
             if str(program.id) == program_id and question.answer is not None:
                 questions_submitted.append(question)
+    address_submitted = serializers.serialize( "python", Address.objects.all() )
+    print(address_submitted)
+   
     return render(request, 'form_builder/view_question_submitted.html',{
         'questions_submitted': questions_submitted,
+        'address_submitted' : address_submitted[0]['fields'],
         'program_id': program_id
     } )
 

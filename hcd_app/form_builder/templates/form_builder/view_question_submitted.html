@@ -22,6 +22,11 @@
             <br>
         </article>
         {% endfor %}
+        <div>
+        {% for key, value in address_submitted.items %}
+           <p> {{key}}: {{value}}</p>
+        {% endfor %}
+        </div>
         <div id ="registration-actions">
             <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
             <a href="/form_builder/" class="btn">return to programs</a>
