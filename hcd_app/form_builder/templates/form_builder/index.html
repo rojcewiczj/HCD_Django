@@ -8,16 +8,17 @@
     <title>{{selected_form.title}}</title>
     <link rel="stylesheet" href="{% static 'form_builder/styles/base.css' %}">
   
-    <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
+   
   
 </head>
 <body>
     <div id="nav">
-        <div></div>
-        <div>
-        <a href="{% url 'all-programs'  %}"><strong class="nav-active">Home</strong></a>
+        <img src="{% static 'form_builder/images/HCD_home.png' %}" >
+        <div id="nav-links">
+        <a href="{% url 'all-programs'  %}"><strong class="nav-active">About</strong></a>
         <a href="{% url 'build_question_view' 2 %}">Resources</a>
         <a href="{% url 'fill_out_form' 2 0 0 %}">Survey</a>
+        </div>
     </div>
     <main>
     <article>
