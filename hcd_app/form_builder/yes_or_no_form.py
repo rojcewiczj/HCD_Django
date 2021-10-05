@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
 from .models import Question
+from django.forms import ModelForm, TextInput, EmailInput
 
 class Yes_or_no_form(forms.ModelForm):
    
@@ -29,3 +30,13 @@ class Yes_or_no_form(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['id','question','answer']
+        widgets = {
+            'answer': TextInput(attrs={
+                'style': 'width: 635px; height: 28px; left: 12px; top: 10px; font-family: Arial; font-style: normal; font-weight: normal; font-size: 36px;line-height: 41px;',
+                'placeholder': 'answer'
+                }),
+            'question': TextInput(attrs={
+                'style': ' visibility: hidden;',
+                'placeholder': 'question'
+                }),
+            }

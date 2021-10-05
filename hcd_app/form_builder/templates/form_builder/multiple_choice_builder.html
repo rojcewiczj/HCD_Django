@@ -17,10 +17,11 @@
         <h1>create a new answer option for this multiple choice question</h1>
         <form action="{% url 'build_question_select_choices' program_id question_id %}" method="POST">
             {% csrf_token %}
-            <label>question:</label>
-            <p>{{question}}</p>
-            <label for="your_name">new answer option: </label>
-            <input id="option_to_add" type="text" name="option_to_add" value="{{ option_to_add}}">
+            <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
+                <p>{{question}}</p>
+                <p>new answer option </p>
+                <input id="option_to_add" type="text" name="option_to_add" value="{{ option_to_add}}">
+            </div>
             <div id ="registration-actions">
                 <button>Submit</button>
                 <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>

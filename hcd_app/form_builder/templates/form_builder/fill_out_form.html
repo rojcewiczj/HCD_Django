@@ -27,11 +27,15 @@
       <article>
         <form action="{% url 'fill_out_form' program_id current_form 0 %}" method="POST">
             {% csrf_token %}
-            <ul>
-            <p></p>
-            {{ value.as_ul }}
-            </ul>
-
+            <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
+             {% if value.1 == 'address_form' %}
+            {{value.0}}
+             {% else %}
+             <p> {{value.1}}</p>
+             {% endif %}
+            {{value.0.question}}
+            {{ value.0.answer}}
+           </div>
             {% if key == last_form %}
             <div id ="registration-actions">
                 <button>Submit</button>

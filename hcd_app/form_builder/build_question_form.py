@@ -8,7 +8,10 @@ answer_format_options = [
     ('address_form', "address form"),
 ]
 class Build_question_form(forms.ModelForm):
-    answer_format = forms.MultipleChoiceField(choices= answer_format_options)
+    answer_format = forms.MultipleChoiceField(
+        choices= answer_format_options,
+        widget= forms.CheckboxSelectMultiple()
+    )
     class Meta:
         model = Question
         fields = ['question','answer_format']

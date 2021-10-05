@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import widgets
 from .models import Address, Question
-from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.widgets import CheckboxSelectMultiple, TextInput
 
 answer_format_options = [
     ('text_field', "text field"),
@@ -80,5 +81,31 @@ class Address_Form(forms.ModelForm):
     class Meta:
         model = Address
         fields = ['address_1','address_2','city','state','zip_code', 'build_date']
+        # widgets ={
+        #     'address_1': TextInput(attrs={
+        #         'style': 'width: 635px; height: 28px;left: 12px; top: 10px;',
+        #         'placeholder': 'answer'
+        #         }),
+        #     'address_2':TextInput(attrs={
+        #         'style': 'width: 635px; height: 28px;left: 12px; top: 10px;',
+        #         'placeholder': 'answer'
+        #         }),
+        #     'city':TextInput(attrs={
+        #         'style': 'width: 635px; height: 28px;left: 12px; top: 10px;',
+        #         'placeholder': 'answer'
+        #         }),
+        #     'state':TextInput(attrs={
+        #         'style': 'width: 100px; height: 28px;left: 12px; top: 10px;',
+        #         'placeholder': 'answer'
+        #         }),
+        #     'zip_code':TextInput(attrs={
+        #         'style': 'width: 386px; height: 28px;left: 12px; top: 10px;',
+        #         'placeholder': 'answer'
+        #         }),
+        #     'build_date':TextInput(attrs={
+        #         'style': 'width: 100px; height: 28px;left: 12px; top: 10px;',
+        #         'placeholder': 'answer'
+        #         }),
+        # }
 
          

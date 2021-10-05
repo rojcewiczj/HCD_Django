@@ -52,7 +52,7 @@ def build_question_view(request, program_id):
         new_question.programs.add(program_id)
         if new_question.answer_format[2:-2] == "multiple_choice":
             return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
-        return redirect('build_question_success', program_id=program_id)
+        
 
     return render(request, 'form_builder/form_question_builder.html', {
         'form': build_question_form,
@@ -110,8 +110,10 @@ def fill_out_form(request, program_id, current_form , back):
                 new_question.programs.add(program_id)
             except:
                 address_forms = Address.objects.all()
-                address_form = address_forms[0]
-                address_form.delete()
+                print("address forms: ", address_forms)
+                if len(address_forms) > 0:
+                    address_form = address_forms[0]
+                    address_form.delete()
                 new_address_form = Address_Form(request.POST)
                 new_address_form.save()
            
@@ -120,13 +122,14 @@ def fill_out_form(request, program_id, current_form , back):
     question_order = {}
     current_program = Program.objects.get(id = program_id)
     question_array = current_program.question_order.split("/")
+    print(question_array)
     for i in range(0, len(question_array)):
         question_order[question_array[i]] = str(i)
-    
+        print(question_order)
     
     forms = {}
     questions = Question.objects.filter(programs = program_id)
-    
+   
     question_ids = [q.question for q in questions]
     for q in questions:
         a_format = q.answer_format
@@ -140,15 +143,15 @@ def fill_out_form(request, program_id, current_form , back):
             q.question = "address_form"
         else:
             question_form = Multiple_choice_helper(q)
-                
-        forms[question_order[q.question]] = question_form
+        forms[question_order[q.question]] = [question_form, q.question]
         
     last_form = str(len(forms) -1)
 
     if current_form > last_form:
         return redirect('view_question_submitted', 2)
     
-        
+    
+    print(forms)
     return render(request, 'form_builder/fill_out_form.html', {
         'forms' : forms,
         'last_form' : last_form,

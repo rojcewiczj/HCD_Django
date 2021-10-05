@@ -1,5 +1,6 @@
 from django import forms
 from django.db.models import query
+from django.forms import TextInput
 from .models import Question
 
 
@@ -14,7 +15,8 @@ def Multiple_choice_helper(question):
         
         answer = forms.MultipleChoiceField(
             
-            choices= options
+            choices= options,
+            widget= forms.CheckboxSelectMultiple()
         )
         
         
@@ -22,5 +24,13 @@ def Multiple_choice_helper(question):
         class Meta:
             model = Question
             fields = ['question','answer']
-
+            widgets = {
+           
+            'question': TextInput(attrs={
+                'style': ' visibility: hidden; hight: 0px;',
+                'placeholder': 'question'
+                }),
+            
+        } 
+            
     return Multiple_choice_form(instance=question)

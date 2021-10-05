@@ -23,14 +23,20 @@
 </div>   
     <main>
         <article>
-        <h1>create a new question</h1>
+        
         <form action="{% url 'build_question_view' program_id %}" method="POST">
             {% csrf_token %}
-            {{ form.as_ul }}
+            <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
+            <h1>create a new question</h1>
+            <p>question to ask</p>{{ form.question }}
+            <p>select format</p>
+            {{ form.answer_format }}
+          
+            </div> 
             
             <div id ="registration-actions">
-                <button>Submit</button>
-                <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
+                 <button>Submit</button>
+                <!-- <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a> -->
             </div>
             
         </form>
