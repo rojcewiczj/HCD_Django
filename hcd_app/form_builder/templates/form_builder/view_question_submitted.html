@@ -11,28 +11,35 @@
    
 </head>
 <body>
-    <main>
-        <article>
-        {% for q in questions_submitted %}
-        <article>
-            <div>
-                <p>QUESTION: {{q.question}}</p>
-                <p>ANSWER: {{q.answer}}</p>
+    <div id="nav">
+        <img src="{% static 'form_builder/images/HCD_home.png' %}" >
+        <div id="nav-links">
+        <a href="{% url 'all-programs'  %}">About</a>
+        <a href="{% url 'build_question_view' 4 %}">Resources</a>
+        <a href="{% url 'fill_out_form' 4 0 0 %}"><strong class="nav-active">Survey</strong></a>
+        </div>
+    </div>
+    <div class="submitted-container">
+       
+        {% for q in questions_submitted %} 
+            <div style="padding: 2%;">
+                <p class ="p-content"><b>Question</b>: {{q.question}}</p>
+                <p class ="p-content"><b>Answer</b>: {{q.answer}}</p>
             </div>
-            <br>
-        </article>
+       
         {% endfor %}
-        <div>
+        <div  style="padding: 2%;">
         {% for key, value in address_submitted.items %}
-           <p> {{key}}: {{value}}</p>
+           <p class = "p-content"> <b>{{key}}</b>: {{value}}</p>
         {% endfor %}
         </div>
-        <div id ="registration-actions">
+   
+        <!-- <div id ="registration-actions">
             <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
             <a href="/form_builder/" class="btn">return to programs</a>
-        </div>
-    </article>
-    </main>
+        </div> -->
+   
+    </div>
             
     </body>
 </html>

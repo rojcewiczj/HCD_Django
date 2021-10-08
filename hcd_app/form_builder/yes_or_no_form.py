@@ -32,7 +32,7 @@ class Yes_or_no_form(forms.ModelForm):
         fields = ['id','question','answer']
         widgets = {
             'answer': TextInput(attrs={
-                'style': 'width: 635px; height: 28px; left: 12px; top: 10px; font-family: Arial; font-style: normal; font-weight: normal; font-size: 36px;line-height: 41px;',
+                'style': 'width: 635px; height: 28px; left: 12px; top: 10px; font-family: Arial; font-style: normal; font-weight: normal; font-size: 50px;line-height: 41px;',
                 'placeholder': 'answer'
                 }),
             'question': TextInput(attrs={

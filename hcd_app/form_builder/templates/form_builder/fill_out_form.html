@@ -13,53 +13,60 @@
 </head>
 <body>
     <div id="nav">
-        <div></div>
-        <div>
-        <a href="{% url 'all-programs'  %}">Home</a>
-        <a href="{% url 'build_question_view' 2 %}">Resources</a>
-        <a href="{% url 'fill_out_form' 2 0 0 %}"><strong class="nav-active">Survey</strong></a>
-    </div>
+        <img src="{% static 'form_builder/images/HCD_home.png' %}" >
+        <div id="nav-links">
+        <a href="{% url 'all-programs'  %}">About</a>
+        <a href="{% url 'build_question_view' 4 %}">Resources</a>
+        <a href="{% url 'fill_out_form' 4 0 0 %}"><strong class="nav-active">Survey</strong></a>
+        </div>
+    </div> 
+    <header>Housing Assistance Quiz</header>
     <main>
-      
-           <h1>answer questions</h1>
         {% for key, value in forms.items %}
         {% if current_form == key %}
-      <article>
+      <article style="display: flex; align-items: center; flex-direction: column; justify-content: center;">
+        <h1 class="question-number">Question #{{key|add:1}} of #{{last_form|add:1}}</h1>
         <form action="{% url 'fill_out_form' program_id current_form 0 %}" method="POST">
             {% csrf_token %}
             <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
              {% if value.1 == 'address_form' %}
+             <div style="margin-bottom : -80px; margin-top: 20px; display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;"">
             {{value.0}}
+            </div>
+            </div>
              {% else %}
              <p> {{value.1}}</p>
              {% endif %}
             {{value.0.question}}
             {{ value.0.answer}}
            </div>
+           <div class="button-container"> 
+            <form action="{% url 'fill_out_form' program_id current_form 1 %}" method="POST">{% csrf_token %}
+                <button class="back-button">Back</button>
+            </form>
             {% if key == last_form %}
             <div id ="registration-actions">
-                <button>Submit</button>
+                <button class="submit-button">Submit</button>
             </div>
-            
             
             {% else %}
             <div id ="registration-actions">
-                <button>Next</button>
+                <button class="next-button">Next</button>
             </div>
             {% endif %}
-            
+           
+        </div>
         </form> 
-        <form action="{% url 'fill_out_form' program_id current_form 1 %}" method="POST">{% csrf_token %}
-        <button>Back</button>
-            </form>
+      
+        
     </article>
         {% endif %}
         {% endfor %}
         <br>
-        <div id ="registration-actions">
+        <!-- <div id ="registration-actions">
         <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
         <a href="/form_builder/" class="btn">return to programs</a>
-        </div>
+        </div> -->
   
     </main>
 

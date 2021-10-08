@@ -1,7 +1,7 @@
 from . import views
 from django.urls import path
-from .models import Question
-from .forms import Text_field_form, Yes_or_no_form, Multiple_choice_helper
+
+
 
 
 
@@ -13,5 +13,6 @@ urlpatterns = [
     path('form_builder/select_choices/<program_id>/<question_id>', views.build_question_select_choices, name="build_question_select_choices" ),
     path('form_builder/build_question_success/<program_id>', views.build_question_success, name="build_question_success"),
     path('form_builder/view_question_submitted/<program_id>', views.view_question_submitted, name="view_question_submitted"),
+    path('form_builder/question_organizer/<program_id>', views.question_organizer, name = "question_organizer" )
      ##our-domain.com/form_builder/<program_name>
 ]

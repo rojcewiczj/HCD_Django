@@ -2,6 +2,8 @@
 from form_builder.models import Program, Question, Address
 from django.shortcuts import render, redirect
 from django.core import serializers
+
+from .question_order_selector import question_order_selector
 from .build_question_form import Build_question_form
 from .text_field_form import Text_field_form
 from .yes_or_no_form import Yes_or_no_form
@@ -102,20 +104,17 @@ def fill_out_form(request, program_id, current_form , back):
             current_form_int += 1
             try:
                 question_to_edit = Question.objects.get(question = request.POST["question"]) 
-                id = question_to_edit.id
-                new_question = question_to_edit
-                new_question.answer = request.POST['answer']
-                question_to_edit.delete()
-                new_question.save()
-                new_question.programs.add(program_id)
+               
+                question_to_edit.answer = request.POST['answer']
+                question_to_edit.save()
+                
             except:
                 address_forms = Address.objects.all()
                 print("address forms: ", address_forms)
                 if len(address_forms) > 0:
                     address_form = address_forms[0]
-                    address_form.delete()
-                new_address_form = Address_Form(request.POST)
-                new_address_form.save()
+                address_form = Address_Form(request.POST)   
+                address_form.save()
            
         
     current_form = str(current_form_int) 
@@ -185,4 +184,25 @@ def program_options(request, program_id):
     
     return render(request, 'form_builder/program_options.html',{
         'program_id' : program_id
+    })
+
+def question_organizer(request, program_id):
+    if request.method == "POST":
+        
+        program = Program.objects.get(id = program_id)
+        program.question_order = "/".join(request.POST.getlist('current_location'))
+        program.save()
+        print(program.question_order)
+
+    program = Program.objects.get(id = program_id)
+    current_question_order = program.question_order
+   
+    question_array = current_question_order.split("/")
+    q_dict = {}
+
+    for i in range(len(question_array)):
+        q_dict[i] = question_order_selector(i, question_array)
+
+    return render(request, 'form_builder/question_organizer.html',{
+        'forms': q_dict
     })

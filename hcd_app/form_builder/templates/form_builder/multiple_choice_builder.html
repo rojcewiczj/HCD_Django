@@ -12,9 +12,16 @@
     
 </head>
 <body>
+    <div id="nav">
+        <img src="{% static 'form_builder/images/HCD_home.png' %}" >
+        <div id="nav-links">
+        <a href="{% url 'all-programs'  %}">About</a>
+        <a href="{% url 'build_question_view' 4 %}">Resources</a>
+        <a href="{% url 'fill_out_form' 4 0 0 %}"><strong class="nav-active">Survey</strong></a>
+        </div>
+    </div>
     <main>
         <article>
-        <h1>create a new answer option for this multiple choice question</h1>
         <form action="{% url 'build_question_select_choices' program_id question_id %}" method="POST">
             {% csrf_token %}
             <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
@@ -23,8 +30,8 @@
                 <input id="option_to_add" type="text" name="option_to_add" value="{{ option_to_add}}">
             </div>
             <div id ="registration-actions">
-                <button>Submit</button>
-                <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a>
+                <button class="lonely-submit">Submit</button>
+                <!-- <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a> -->
             </div>
         </article>
     </main>

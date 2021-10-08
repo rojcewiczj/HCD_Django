@@ -13,29 +13,31 @@
     <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
 </head>
 <body>
- <div id="nav">
-    <div></div>
-    <div>
-    <a href="{% url 'all-programs'  %}">Home</a>
-    <a href="{% url 'build_question_view' 2 %}"><strong class="nav-active">Resources</strong></a>
-    <a href="{% url 'fill_out_form' 2 0 0 %}">Survey</a>
-</div>
+    <div id="nav">
+        <img src="{% static 'form_builder/images/HCD_home.png' %}" >
+        <div id="nav-links">
+        <a href="{% url 'all-programs'  %}">About</a>
+        <a href="{% url 'build_question_view' 4 %}"><strong class="nav-active">Resources</strong></a>
+        <a href="{% url 'fill_out_form' 4 0 0 %}">Survey</a>
+        </div>
+    </div>
 </div>   
     <main>
         <article>
-        
         <form action="{% url 'build_question_view' program_id %}" method="POST">
             {% csrf_token %}
             <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
-            <h1>create a new question</h1>
-            <p>question to ask</p>{{ form.question }}
-            <p>select format</p>
+            
+            <p>Put your question below:</p>{{ form.question }}
+            <p>Select answer format:</p>
             {{ form.answer_format }}
           
             </div> 
             
-            <div id ="registration-actions">
-                 <button>Submit</button>
+            <div id ="registration-actions" style ="display: flex; align-items: center; justify-content: center;">
+                 <a class="btn" href="{% url 'question_organizer' 4 %}">Organize</a>
+                <button>Submit</button>
+               
                 <!-- <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a> -->
             </div>
             
