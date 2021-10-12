@@ -20,25 +20,56 @@
         </div>
     </div>
     <div class="submitted-container">
-       
-        {% for q in questions_submitted %} 
-            <div style="padding: 2%;">
-                <p class ="p-content"><b>Question</b>: {{q.question}}</p>
-                <p class ="p-content"><b>Answer</b>: {{q.answer}}</p>
-            </div>
-       
-        {% endfor %}
-        <div  style="padding: 2%;">
-        {% for key, value in address_submitted.items %}
-           <p class = "p-content"> <b>{{key}}</b>: {{value}}</p>
-        {% endfor %}
+        
+         <div style="display: flex; flex-direction: column; align-items: left; justify-content: left; background-color: #114449;">
+             <h1 style="margin-left: 50px; color: #E5E5E5"">Weatherization Assistance Program</h1>
+             <p style="margin-left: 50px; font-size: 18px; color: #E5E5E5"">Provided by Housing and Community Development</p>
+         
+        
+    </div> 
+    
+    <p style="font-size: 15px; margin: 50px;">WAP is a program designed to assist low-income households in reducing their fuel costs while contributing to national energy conservation through increased energy efficiency and consumer education. Weatherization work can include various types of insulation, air sealing, duct sealing,
+        </p>
+        <div>
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 180px;">Why its recommended</h5>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="">Your home has a high energy burden</p></div>
         </div>
+        <div style="display: flex; flex-direction: column; align-items: space-between;">
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 77px;">Eligibility </h5>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""></p><p style="font-size: 15px;">You rent or own a home in Shelby County</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">Your yearly household income is less than $XX,000 for a family of X</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">Your home does not have any serious structural issues</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">Your home does not have any known lead hazards</p></div>
+    
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: space-between;">
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 195px;">What You Need to Apply</h5>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt=""></p><p style="font-size: 15px;">Government issued ID</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="">Proof of income for the past 3 months</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="">Energy bills for the past 3 months</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="">Proof of homeownership or residence</p></div>
+    
+        </div>
+
+        <div>
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 250px;">What to Expect Before Applying</h5>
+            <p style="font-size: 15px; margin-left: 50px; margin-right: 50px;">The City has 90 days to approve or deny the application. If your application is approved, a certified auditor will visit your home to perform an energy audit resulting in a work order with a list of recommended weatherization measures. However, please note that due to high demand, priority will be given to persons with disability, and the elderly. In addition, homes may be deferred due to poor structural conditions.
+            </p>
+        </div>
+        <div>
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px;border-bottom: solid; width: 90px;">Need Help?</h5>
+            <div style="display: flex; margin-top: -60px; margin-left: 50px; margin-top: -10px;" ><p style="font-size: 15px;">x</p><p style="font-size: 15px;">Call: (901) 636-7366</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: -10px;" ><p style="font-size: 15px;">x</p><p style="font-size: 15px;">E-mail: weatherization@memphistn.gov</p></div>
+        </div>
+    
    
         <!-- <div id ="registration-actions">
             <a href="/form_builder/program_options/{{5}}" class="btn">return to program options</a>
             <a href="/form_builder/" class="btn">return to programs</a>
         </div> -->
-   
+        <div style="display: flex; justify-content: right;">
+         <button style="width: 150px">Apply</button>
+        </div>
     </div>
             
     </body>
