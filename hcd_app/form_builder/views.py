@@ -21,9 +21,13 @@ def index(request):
         "programs":  programs,
     })
 
-def build_question_view(request, program_id):
+def ajax_build_question_view(request, program_id):
     programs = Program.objects.all()
     program = None
+    img_src = request.GET['result']
+  
+
+
     for program in programs:
         if program.id == program_id:
             program = program
@@ -55,9 +59,55 @@ def build_question_view(request, program_id):
         if new_question.answer_format[2:-2] == "multiple_choice":
             return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
         
-
+    
+    
     return render(request, 'form_builder/form_question_builder.html', {
         'form': build_question_form,
+        'preview': img_src,
+        'program_id': program_id
+    })
+
+
+def build_question_view(request, program_id):
+    programs = Program.objects.all()
+    program = None
+    img_src = None
+    for program in programs:
+        if program.id == program_id:
+            program = program
+
+    if request.method == "GET":
+        build_question_form = Build_question_form()
+    else:
+        build_question_form = Build_question_form(request.POST)
+        if build_question_form.is_valid():
+            new_question = build_question_form.save()
+            if request.POST['answer_format'] != 'address_form':
+                
+                if program.question_order == None:
+                    program.question_order = new_question.question
+                else:
+                    program.question_order += f"/{new_question.question}"
+            else: 
+                new_address_form = Address_Form()
+                if new_address_form.is_valid():
+                    new_address_form.save()
+
+                if program.question_order == None:
+                    program.question_order = "address_form"
+                else:
+                    program.question_order += f"/address_form"
+            
+        program.save()
+        new_question.programs.add(program_id)
+        if new_question.answer_format[2:-2] == "multiple_choice":
+            return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
+        
+    
+    
+    return render(request, 'form_builder/form_question_builder.html', {
+        'form': build_question_form,
+        'preview': img_src,
         'program_id': program_id
     })
 
@@ -93,7 +143,10 @@ def build_question_success(request, program_id):
 
         
 def fill_out_form(request, program_id, current_form , back): 
+    program = Program.objects.get(id = 5)
     
+    if program.question_order == None:
+        return redirect("build_question_view", program_id = program_id)
     current_form_int = int(current_form)
         
     if request.method == "POST":
@@ -121,10 +174,10 @@ def fill_out_form(request, program_id, current_form , back):
     question_order = {}
     current_program = Program.objects.get(id = program_id)
     question_array = current_program.question_order.split("/")
-    print(question_array)
+    
     for i in range(0, len(question_array)):
         question_order[question_array[i]] = str(i)
-        print(question_order)
+       
     
     forms = {}
     questions = Question.objects.filter(programs = program_id)
@@ -142,7 +195,7 @@ def fill_out_form(request, program_id, current_form , back):
             q.question = "address_form"
         else:
             question_form = Multiple_choice_helper(q)
-        forms[question_order[q.question]] = [question_form, q.question]
+        forms[question_order[q.question]] = [question_form, q.question, q.img]
         
     last_form = str(len(forms) -1)
 
@@ -150,7 +203,7 @@ def fill_out_form(request, program_id, current_form , back):
         return redirect('view_question_submitted', 2)
     
     
-    print(forms)
+    
     return render(request, 'form_builder/fill_out_form.html', {
         'forms' : forms,
         'last_form' : last_form,
@@ -161,15 +214,25 @@ def fill_out_form(request, program_id, current_form , back):
 
 
 def view_question_submitted(request, program_id):
+    program = Program.objects.get(id = 5)
     questions_submitted = []
     
     questions = Question.objects.all()
     for question in questions:
-        for program in question.programs.all():
-            if str(program.id) == program_id and question.answer is not None:
-                questions_submitted.append(question)
-    address_submitted = serializers.serialize( "python", Address.objects.all() )
-    print(address_submitted)
+        if question.answer is not None:
+            questions_submitted.append(question)
+
+    address_submitted = [{'fields' : ""}]
+    if program.question_order:
+        array_order = program.question_order.split("/")
+        if 'address_form' in array_order:
+             address_submitted = serializers.serialize( "python", Address.objects.all() )
+        else:
+            Address_objects = Address.objects.all()
+            for address in Address_objects:
+                address.delete()
+
+    
    
     return render(request, 'form_builder/view_question_submitted.html',{
         'questions_submitted': questions_submitted,

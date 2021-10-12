@@ -16,15 +16,15 @@
         <img src="{% static 'form_builder/images/HCD_home.png' %}" >
         <div id="nav-links">
         <a href="{% url 'all-programs'  %}"><strong class="nav-active">About</strong></a>
-        <a href="{% url 'build_question_view' 4 %}">Resources</a>
-        <a href="{% url 'fill_out_form' 4 0 0 %}">Survey</a>
+        <a href="{% url 'build_question_view' 5 %}">Resources</a>
+        <a href="{% url 'fill_out_form' 5 0 0 %}">Survey</a>
         </div>
     </div>
     <main>
     <article>
    
         <div class="container">
-            <form action="{% url 'question_organizer' 4 %}" method="POST">  {% csrf_token %}
+            <form action="{% url 'question_organizer' 5 %}" method="POST">  {% csrf_token %}
             {% for key, value in forms.items %}
             <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
                  <div>

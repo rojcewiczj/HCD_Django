@@ -4,6 +4,17 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script >
+        const showImgPreview = (value) => {
+            console.log(value)
+            var img = document.getElementById("preview")
+            img.src = `/static/${value}`
+            console.log(img.src)
+        }
+   
+
+    </script>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,28 +28,32 @@
         <img src="{% static 'form_builder/images/HCD_home.png' %}" >
         <div id="nav-links">
         <a href="{% url 'all-programs'  %}">About</a>
-        <a href="{% url 'build_question_view' 4 %}"><strong class="nav-active">Resources</strong></a>
-        <a href="{% url 'fill_out_form' 4 0 0 %}">Survey</a>
+        <a href="{% url 'build_question_view' 5 %}"><strong class="nav-active">Resources</strong></a>
+        <a href="{% url 'fill_out_form' 5 0 0 %}">Survey</a>
         </div>
     </div>
 </div>   
     <main>
         <article>
-        <form action="{% url 'build_question_view' program_id %}" method="POST">
+        <form action="{% url 'build_question_view' 5 %}" method="POST">
             {% csrf_token %}
             <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
             
-            <p>Put your question below:</p>{{ form.question }}
-            <p>Select answer format:</p>
-            {{ form.answer_format }}
+            <p>Create a question: {{ form.question }}</p>
+            <p>Select an image: {{form.img}}</p> 
+            <p>{{hello}}</p>
+            <img id = "preview" width="250"  height="250">
+            
+            <p>Select answer format: {{ form.answer_format }}</p>
+            
           
             </div> 
             
             <div id ="registration-actions" style ="display: flex; align-items: center; justify-content: center;">
-                 <a class="btn" href="{% url 'question_organizer' 4 %}">Organize</a>
+                 <a class="btn" href="{% url 'question_organizer' 5 %}">Organize</a>
                 <button>Submit</button>
                
-                <!-- <a href="/form_builder/program_options/{{program_id}}" class="btn">return to program options</a> -->
+                <!-- <a href="/form_builder/program_options/{{5}}" class="btn">return to program options</a> -->
             </div>
             
         </form>
@@ -48,4 +63,5 @@
     </main>
     
 </body>
+
 </html>
