@@ -20,13 +20,13 @@
         <a href="{% url 'fill_out_form' 5 0 0 %}">Survey</a>
         </div>
     </div>
-    <main>
+    <main style="width: 1200px;">
     <article>
    
-        <div class="container">
+        <div class="container" style="display: flex; justify-content: space-around; width: 1000px;" >
             <form action="{% url 'question_organizer' 5 %}" method="POST">  {% csrf_token %}
             {% for key, value in forms.items %}
-            <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                  <div>
                     {{value}}
                 </div>
@@ -35,6 +35,18 @@
             <div id ="registration-actions">
                 <button class="submit-button">Submit</button>
             </div>
+            </form>
+            <form action="{% url 'question_remove' 5 %}" method="POST"style="display: flex; flex-direction: column; margin-top: 150px">  {% csrf_token %}
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="display: flex; flex-direction: column;">
+                       {{remove_form}}
+                   </div>
+              
+               <div id ="registration-actions">
+                   <button class="back-button">Remove</button>
+               </div> 
+            </div>
+
             </form>
     </div>
         

@@ -85,6 +85,7 @@ button:hover,
 #main-header h1 {
     font-size: 1.5rem;
 }
+
 #main-logo {
     font-size: 3rem;
     font-family: 'Roboto Slab', sans-serif;
@@ -201,19 +202,45 @@ ul{
 }
 
 #id_answer_0{
-  height: 2.2vh;
-  width: 2.2vw;
-  background-color: #114449;
+  width: 2.3em;
+  height: 2.3em;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
 }
 #id_answer_1{
-  height: 2.2vh;
-  width: 2.2vw;
-  background-color: #114449;
+  width: 2.3em;
+  height: 2.3em;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
 }
 #id_answer_2{
-  height: 2.2vh;
-  width: 2.2vw;
+  width: 1.3em;
+  height: 1.3em;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+#id_answer_1:checked{
   background-color: #114449;
+  color: white;
+}
+#id_answer_0:checked{
+  background-color: #114449;
+  color: white;
 }
 .question-number{
   margin-left: -20px;

@@ -11,6 +11,7 @@ from .multiple_choice_form import Multiple_choice_helper
 from .answer_option_form import Answer_option_form
 from formtools.wizard.views import SessionWizardView
 from .forms import Address_Form
+from .remove_form import Remove_form
 # Create your views here.
 
 
@@ -21,51 +22,6 @@ def index(request):
         "programs":  programs,
     })
 
-def ajax_build_question_view(request, program_id):
-    programs = Program.objects.all()
-    program = None
-    img_src = request.GET['result']
-  
-
-
-    for program in programs:
-        if program.id == program_id:
-            program = program
-
-    if request.method == "GET":
-        build_question_form = Build_question_form()
-    else:
-        build_question_form = Build_question_form(request.POST)
-        if build_question_form.is_valid():
-            new_question = build_question_form.save()
-            if request.POST['answer_format'] != 'address_form':
-                
-                if program.question_order == None:
-                    program.question_order = new_question.question
-                else:
-                    program.question_order += f"/{new_question.question}"
-            else: 
-                new_address_form = Address_Form()
-                if new_address_form.is_valid():
-                    new_address_form.save()
-
-                if program.question_order == None:
-                    program.question_order = "address_form"
-                else:
-                    program.question_order += f"/address_form"
-            
-        program.save()
-        new_question.programs.add(program_id)
-        if new_question.answer_format[2:-2] == "multiple_choice":
-            return redirect("build_question_select_choices", question_id = new_question.id, program_id = program_id)
-        
-    
-    
-    return render(request, 'form_builder/form_question_builder.html', {
-        'form': build_question_form,
-        'preview': img_src,
-        'program_id': program_id
-    })
 
 
 def build_question_view(request, program_id):
@@ -144,8 +100,7 @@ def build_question_success(request, program_id):
         
 def fill_out_form(request, program_id, current_form , back): 
     program = Program.objects.get(id = 5)
-    
-    if program.question_order == None:
+    if program.question_order == "" or program.question_order is None:
         return redirect("build_question_view", program_id = program_id)
     current_form_int = int(current_form)
         
@@ -222,13 +177,13 @@ def view_question_submitted(request, program_id):
     
     structural_issues = {
         'paint' : "structural",
-        'roofing' : "structural",
+        'roof' : "structural",
 
     }
  
     eligibility_questions = {
         "Memphis": "ShelbyCounty",
-        "income level": "IncomeFamily",
+        "income": "IncomeFamily",
         "structural": "StructuralIssues",
         "lead"     : "LeadIssues",
         "live in your home" : "",
@@ -251,7 +206,7 @@ def view_question_submitted(request, program_id):
                 eligibility_questions_final[eligibility_questions[structural_issues[key]]] = question.answer
         for key, value in eligibility_questions.items():
             if key in question.question:
-                if key == "income level":
+                if key == "income":
                     income = int(question.answer)
                     if income < 45000:
                         income_level = True
@@ -267,8 +222,8 @@ def view_question_submitted(request, program_id):
     if program.question_order:
         array_order = program.question_order.split("/")
         if 'address_form' in array_order:
-             address_submitted = serializers.serialize( "python", Address.objects.all() )
-             print(address_submitted)
+            address_submitted = serializers.serialize( "python", Address.objects.all() )
+             
         else:
             Address_objects = Address.objects.all()
             for address in Address_objects:
@@ -278,7 +233,7 @@ def view_question_submitted(request, program_id):
         eligibility_questions_final["ShelbyCounty"] = "yes"
     else:
         eligibility_questions_final["ShelbyCounty"] = "no"
-    
+    print(income_level)
     print(eligibility_questions_final)
     return render(request, 'form_builder/view_question_submitted.html',{
         'questions_submitted': questions_submitted,
@@ -309,12 +264,50 @@ def question_organizer(request, program_id):
     program = Program.objects.get(id = program_id)
     current_question_order = program.question_order
    
-    question_array = current_question_order.split("/")
+    question_array = current_question_order.split("/") 
+    remove_form = Remove_form(question_array)
     q_dict = {}
 
     for i in range(len(question_array)):
         q_dict[i] = question_order_selector(i, question_array)
 
     return render(request, 'form_builder/question_organizer.html',{
-        'forms': q_dict
+        'forms': q_dict,
+        'remove_form' : remove_form
     })
+
+def question_remove(request, program_id):
+    if request.method == "POST":
+       
+        program = Program.objects.get(id = program_id)
+        question_array = program.question_order.split('/')
+        for question in question_array:
+            if question == request.POST['current_location']:
+                question_array.remove(question)
+                Question.objects.filter(question = question).delete()
+                
+        program.question_order = ("/").join(question_array)
+        program.save()
+        
+                
+        
+        
+        # program.save()
+        # print(program.question_order)
+
+    program = Program.objects.get(id = program_id)
+    current_question_order = program.question_order
+   
+    question_array = current_question_order.split("/") 
+    remove_form = Remove_form(question_array)
+    q_dict = {}
+
+    for i in range(len(question_array)):
+        q_dict[i] = question_order_selector(i, question_array)
+
+    return render(request, 'form_builder/question_organizer.html',{
+        'forms': q_dict,
+        'remove_form' : remove_form
+    })
+    pass
+
