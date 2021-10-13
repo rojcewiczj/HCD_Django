@@ -27,19 +27,43 @@
          
         
     </div> 
-    
+
     <p style="font-size: 15px; margin: 50px;">WAP is a program designed to assist low-income households in reducing their fuel costs while contributing to national energy conservation through increased energy efficiency and consumer education. Weatherization work can include various types of insulation, air sealing, duct sealing,
         </p>
         <div>
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 180px;">Why its recommended</h5>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="">Your home has a high energy burden</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px;" >
+                {% if elig_questions.EnergyBurden == "yes" %}
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">
+                {% else %} 
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="">
+                {% endif %}
+                    Your home has a high energy burden</p></div>
         </div>
         <div style="display: flex; flex-direction: column; align-items: space-between;">
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 77px;">Eligibility </h5>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""></p><p style="font-size: 15px;">You rent or own a home in Shelby County</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">Your yearly household income is less than $XX,000 for a family of X</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">Your home does not have any serious structural issues</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">Your home does not have any known lead hazards</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;">
+                {% if elig_questions.ShelbyCounty == "yes" %}
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">
+                {% else %} 
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="">
+                {% endif %}</p><p style="font-size: 15px;">You rent or own a home in Shelby County</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   {% if elig_questions.IncomeFamily == "yes" %}
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">
+                {% else %} 
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="">
+                {% endif %}Your yearly household income is less than $45,000 for a family of {{family_size}}</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   {% if elig_questions.StructuralIssues == "yes" %}
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">
+                {% else %} 
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="">
+                {% endif %}Your home does not have any serious structural issues</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   
+                {% if elig_questions.LeadIssues == "yes" %}
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="">
+                {% else %} 
+                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="">
+                {% endif %}Your home does not have any known lead hazards</p></div>
     
         </div>
         <div style="display: flex; flex-direction: column; align-items: space-between;">
@@ -58,8 +82,8 @@
         </div>
         <div>
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px;border-bottom: solid; width: 90px;">Need Help?</h5>
-            <div style="display: flex; margin-top: -60px; margin-left: 50px; margin-top: -10px;" ><p style="font-size: 15px;">x</p><p style="font-size: 15px;">Call: (901) 636-7366</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: -10px;" ><p style="font-size: 15px;">x</p><p style="font-size: 15px;">E-mail: weatherization@memphistn.gov</p></div>
+            <div style="display: flex; margin-top: -60px; margin-left: 50px; margin-top: -10px;" ><img src="{% static 'form_builder/images/Vector.png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">Call: (901) 636-7366</p></div>
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: -10px;" ><img src="{% static 'form_builder/images/Vector (1).png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">E-mail: weatherization@memphistn.gov</p></div>
         </div>
     
    

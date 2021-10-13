@@ -156,18 +156,20 @@ def fill_out_form(request, program_id, current_form , back):
         elif back == '0':
             current_form_int += 1
             try:
-                question_to_edit = Question.objects.get(question = request.POST["question"]) 
-               
+                question_to_edit = Question.objects.get(question = request.POST["question"])
+                
                 question_to_edit.answer = request.POST['answer']
+                if type(request.POST['answer']) is list:
+                    print(request.POST) 
                 question_to_edit.save()
                 
             except:
                 address_forms = Address.objects.all()
-                print("address forms: ", address_forms)
                 if len(address_forms) > 0:
                     address_form = address_forms[0]
-                address_form = Address_Form(request.POST)   
-                address_form.save()
+                address_form = Address_Form(request.POST) 
+                if address_form.is_valid(): 
+                    address_form.save()
            
         
     current_form = str(current_form_int) 
@@ -214,29 +216,75 @@ def fill_out_form(request, program_id, current_form , back):
 
 
 def view_question_submitted(request, program_id):
+
     program = Program.objects.get(id = 5)
     questions_submitted = []
     
+    structural_issues = {
+        'paint' : "structural",
+        'roofing' : "structural",
+
+    }
+ 
+    eligibility_questions = {
+        "Memphis": "ShelbyCounty",
+        "income level": "IncomeFamily",
+        "structural": "StructuralIssues",
+        "lead"     : "LeadIssues",
+        "live in your home" : "",
+        "energy" : "EnergyBurden"
+    }
+    eligibility_questions_final ={
+
+    }
     questions = Question.objects.all()
     for question in questions:
         if question.answer is not None:
             questions_submitted.append(question)
+
+    income_level = False
+    family_size = 0
+
+    for question in questions_submitted:
+        for key, value in structural_issues.items():
+            if key in question.question:
+                eligibility_questions_final[eligibility_questions[structural_issues[key]]] = question.answer
+        for key, value in eligibility_questions.items():
+            if key in question.question:
+                if key == "income level":
+                    income = int(question.answer)
+                    if income < 45000:
+                        income_level = True
+                elif key == "live in your home":
+                    family_size = int(question.answer)
+                else:
+                    eligibility_questions_final[value] = question.answer
+    if income_level == True and family_size > 5:
+         eligibility_questions_final["IncomeFamily"] = "yes"      
+                        
 
     address_submitted = [{'fields' : ""}]
     if program.question_order:
         array_order = program.question_order.split("/")
         if 'address_form' in array_order:
              address_submitted = serializers.serialize( "python", Address.objects.all() )
+             print(address_submitted)
         else:
             Address_objects = Address.objects.all()
             for address in Address_objects:
                 address.delete()
 
+    if address_submitted[-1]['fields']['city'] == "Memphis":
+        eligibility_questions_final["ShelbyCounty"] = "yes"
+    else:
+        eligibility_questions_final["ShelbyCounty"] = "no"
     
-   
+    print(eligibility_questions_final)
     return render(request, 'form_builder/view_question_submitted.html',{
         'questions_submitted': questions_submitted,
+        'elig_questions': eligibility_questions_final,
         'address_submitted' : address_submitted[0]['fields'],
+        'family_size' : family_size,
         'program_id': program_id
     } )
 
@@ -250,6 +298,7 @@ def program_options(request, program_id):
     })
 
 def question_organizer(request, program_id):
+
     if request.method == "POST":
         
         program = Program.objects.get(id = program_id)

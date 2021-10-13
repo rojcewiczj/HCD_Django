@@ -47,9 +47,8 @@
             {% endif %}
            </div>
            <div class="button-container"> 
-            <form action="{% url 'fill_out_form' 5 current_form 1 %}" method="POST">{% csrf_token %}
-                <button class="back-button">Back</button>
-            </form>
+                <input class="back-button" type=button value="Back" onClick="javascript:history.go(-1);">
+           
             {% if key == last_form %}
             <div id ="registration-actions">
                 <button class="submit-button">Submit</button>

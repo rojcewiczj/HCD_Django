@@ -8,11 +8,11 @@ from localflavor.us.models import USStateField
 class Program(models.Model):
     title = models.CharField(max_length=50)
     question_order = models.CharField(max_length=10000, null=True, blank=True)
-
+   
 class Question(models.Model):
     question = models.CharField(max_length=250, null= True, blank= True)
     img = models.CharField(max_length=250, null= True, blank= True)
-    answer = models.CharField(max_length=250,null=True, blank=True)
+    answer = models.CharField(max_length=250, null=True, blank=True)
     answer_format = models.CharField(max_length=50, default='text field')
     programs = models.ManyToManyField(Program, blank=True, null=True)
 

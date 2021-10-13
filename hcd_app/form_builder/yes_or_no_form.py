@@ -4,7 +4,13 @@ from .models import Question
 from django.forms import ModelForm, TextInput, EmailInput
 
 class Yes_or_no_form(forms.ModelForm):
-   
+    def clean(self, value):
+        if not value and self.required:
+            raise forms.ValidationError(self.error_messages['required'])
+        if value and self.max_choices and len(value) > self.max_choices:
+            raise forms.ValidationError('You must select a maximum of %s choice%s.')
+                   
+        return value
     
     # if forms.ModelForm.answer_format == "text_field":
     #     answer = forms.CharField(min_length=5,max_length= 200)
@@ -12,7 +18,7 @@ class Yes_or_no_form(forms.ModelForm):
         ("yes" , "Yes"),
         ("no" , "No")
     ]
-    answer = forms.MultipleChoiceField(
+    answer = forms.ChoiceField(
         widget=CheckboxSelectMultiple,
         choices= yes_or_no
     )
