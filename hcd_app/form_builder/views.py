@@ -254,14 +254,19 @@ def view_question_submitted(request, program_id):
                 address.delete()
 
     
-    print(income_level)
-    print(eligibility_questions_final)
+    not_eligible = False
+    for key,value in eligibility_questions_final.items():
+        if value == "no":
+            not_eligible = True
+
+
     return render(request, 'form_builder/view_question_submitted.html',{
         'questions_submitted': questions_submitted,
         'elig_questions': eligibility_questions_final,
         'address_submitted' : address_submitted[0]['fields'],
         'family_size' : family_size,
-        'program_id': program_id
+        'program_id': program_id,
+        'not_eligible': not_eligible
     } )
 
 

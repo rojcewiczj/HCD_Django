@@ -189,6 +189,23 @@ form{
   /* overflow-x: 220;
   overflow-y: 306; */
 }
+#collapse_btn{
+  width: 780px;
+  height: 50px;
+  background-color: #114449;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: none;
+  margin:auto;
+  margin-bottom: 0px;
+}
+#button_text{
+  font-size: 18px;
+  color: #FFFFFF;
+  padding:0px;
+  margin : 0px;
+}
 
 .p-content{
   font-size: 20px;
@@ -245,4 +262,10 @@ ul{
 .question-number{
   margin-left: -20px;
   color: #676974;
+}
+
+.eligibility{
+  font-size: 15px; 
+  display: flex; 
+  justify-content: center;
 }
