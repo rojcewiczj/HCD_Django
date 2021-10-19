@@ -6,11 +6,11 @@ from .models import Question
 
 def Multiple_choice_helper(question):   
     options = []
-    opts = question.answer_format[1:].split(" ")
+    opts = question.answer_format.split('/')
     for opt in opts:
         options.append((opt, opt))
    
-
+    print(options)
     class Multiple_choice_form(forms.ModelForm):
         
         answer = forms.MultipleChoiceField(

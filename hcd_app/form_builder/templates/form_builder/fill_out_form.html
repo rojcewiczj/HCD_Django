@@ -45,6 +45,10 @@
            <img src = "{% static value.2 %}"   width="250" 
            height="250">
             {% endif %}
+            {% if value.3 != 'None' %}
+            <img src = "{% static value.3 %}"   width="250" 
+            height="250">
+             {% endif %}
            </div>
            <div class="button-container"> 
                 <input class="back-button" type=button value="Back" onClick="javascript:history.go(-1);">

@@ -34,16 +34,31 @@ def build_question_view(request, program_id):
 
     if request.method == "GET":
         build_question_form = Build_question_form()
+       
     else:
         build_question_form = Build_question_form(request.POST)
-        if build_question_form.is_valid():
+        duplicate = Question.objects.filter(question = request.POST['question'])
+        if duplicate:
+                return render(request, 'form_builder/form_question_builder.html', {
+                    'form': build_question_form,
+                    'preview': img_src,
+                    'program_id': program_id,
+                    'warning' : "you've already asked that question"
+                })
+        if build_question_form.is_valid(): 
+           
             new_question = build_question_form.save()
+           
             if request.POST['answer_format'] != 'address_form':
                 
-                if program.question_order == None:
+                if len(program.question_order) == 0:
                     program.question_order = new_question.question
+                    print(program.question_order)
+                    
                 else:
+                    
                     program.question_order += f"/{new_question.question}"
+                    
             else: 
                 new_address_form = Address_Form()
                 if new_address_form.is_valid():
@@ -64,9 +79,12 @@ def build_question_view(request, program_id):
     return render(request, 'form_builder/form_question_builder.html', {
         'form': build_question_form,
         'preview': img_src,
-        'program_id': program_id
+        'program_id': program_id,
+        'warning' : ''
     })
 
+
+    
 def build_question_select_choices(request, program_id, question_id):
     print(question_id)
     question_to_edit = Question.objects.get(id = question_id)
@@ -77,9 +95,12 @@ def build_question_select_choices(request, program_id, question_id):
         new_options_added = question_to_edit
         if new_options_added.answer_format == "['multiple_choice']":
             new_options_added.answer_format = ""
-        
-        new_options_added.answer_format += f" {request.POST['option_to_add']}"
+        if new_options_added.answer_format == "":
+            new_options_added.answer_format += f"{request.POST['option_to_add']}"
+        else:
+            new_options_added.answer_format += f"/{request.POST['option_to_add']}"
         new_options_added.save()
+        print(new_options_added.answer_format)
 
         answer_option_form = Answer_option_form(question_to_edit)
     return render(request, "form_builder/multiple_choice_builder.html", {
@@ -131,7 +152,6 @@ def fill_out_form(request, program_id, current_form , back):
     question_order = {}
     current_program = Program.objects.get(id = program_id)
     question_array = current_program.question_order.split("/")
-    
     for i in range(0, len(question_array)):
         question_order[question_array[i]] = str(i)
        
@@ -152,13 +172,13 @@ def fill_out_form(request, program_id, current_form , back):
             q.question = "address_form"
         else:
             question_form = Multiple_choice_helper(q)
-        forms[question_order[q.question]] = [question_form, q.question, q.img]
+        forms[question_order[q.question]] = [question_form, q.question, q.img, q.second_img]
         
     last_form = str(len(forms) -1)
-
-    if current_form > last_form:
-        return redirect('view_question_submitted', 2)
     
+    if int(current_form) > int(last_form):
+        print(current_form, last_form)
+        return redirect('view_question_submitted', 2)
     
     
     return render(request, 'form_builder/fill_out_form.html', {
@@ -221,18 +241,19 @@ def view_question_submitted(request, program_id):
     address_submitted = [{'fields' : ""}]
     if program.question_order:
         array_order = program.question_order.split("/")
+        print(array_order)
         if 'address_form' in array_order:
             address_submitted = serializers.serialize( "python", Address.objects.all() )
-             
+            if address_submitted[-1]['fields']['city'] == "Memphis":
+                eligibility_questions_final["ShelbyCounty"] = "yes"
+            else:
+                eligibility_questions_final["ShelbyCounty"] = "no"
         else:
             Address_objects = Address.objects.all()
             for address in Address_objects:
                 address.delete()
 
-    if address_submitted[-1]['fields']['city'] == "Memphis":
-        eligibility_questions_final["ShelbyCounty"] = "yes"
-    else:
-        eligibility_questions_final["ShelbyCounty"] = "no"
+    
     print(income_level)
     print(eligibility_questions_final)
     return render(request, 'form_builder/view_question_submitted.html',{
@@ -281,9 +302,16 @@ def question_remove(request, program_id):
        
         program = Program.objects.get(id = program_id)
         question_array = program.question_order.split('/')
+        print(question_array)
         for question in question_array:
             if question == request.POST['current_location']:
                 question_array.remove(question)
+                if question == 'address_form':
+                    address_forms = Address.objects.all()
+                    for form in address_forms:
+                        form.delete()
+                    Question.objects.filter(answer_format = "['address_form']").delete()
+
                 Question.objects.filter(question = question).delete()
                 
         program.question_order = ("/").join(question_array)
