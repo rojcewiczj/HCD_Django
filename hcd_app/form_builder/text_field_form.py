@@ -4,7 +4,7 @@ from .models import Question
 from django.forms import ModelForm, TextInput, EmailInput
 class Text_field_form(forms.ModelForm):
     
-    answer = forms.CharField(min_length=1,max_length= 200)
+    answer = forms.CharField(min_length=1,max_length= 200, widget=forms.TextInput(attrs={'placeholder': 'input text here'}))
 
     class Meta:
         model = Question

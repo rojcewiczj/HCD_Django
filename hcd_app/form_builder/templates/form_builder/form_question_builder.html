@@ -10,6 +10,19 @@
             console.log(value)
             var img = document.getElementById("preview")
             img.src = `/static/${value}`
+            if(value == 'None'){
+                img.src = ''
+                console.log("this is nothing")
+            }
+            console.log(img.src)
+        }
+        const showSecondImgPreview = (value) => {
+            console.log(value)
+            var img = document.getElementById("second_preview")
+            img.src = `/static/${value}`
+            if(value == 'None'){
+                img.src = ''
+            }
             console.log(img.src)
         }
    
@@ -33,17 +46,22 @@
         </div>
     </div>
 </div>   
-    <main>
+    <main> {% if warning %}
+        <h2 style="color: red;">{{warning}}</h2>
+        {% endif %}
         <article>
         <form action="{% url 'build_question_view' 5 %}" method="POST">
             {% csrf_token %}
             <div style="display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
             
             <p>Create a question: {{ form.question }}</p>
-            <p>Select an image: {{form.img}}</p> 
+            <p>First image: {{form.img}}</p>
+            <p>Second image: {{form.second_img}}</p> 
             <p>{{hello}}</p>
+            <div style="display: flex;">
             <img id = "preview" width="250"  height="250">
-            
+            <img id = "second_preview" width="250"  height="250">
+            </div>
             <p>Select answer format: {{ form.answer_format }}</p>
             
           

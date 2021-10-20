@@ -30,7 +30,7 @@
             {% csrf_token %}
             <div style="display: flex; flex-direction: row; width: 650px;  align-items: center; justify-content: space-between; margin-top: 1em;">
              {% if value.1 == 'address_form' %}
-             <div style="margin-bottom : -80px; margin-top: 20px; display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
+             <div style="margin-bottom : -80px; margin-top: 20px; display: flex; flex-direction: column; width: 650px;  align-items: left; justify-content: center;">
             {{value.0}}
             </div>
             </div>
@@ -40,23 +40,35 @@
              {% endif %}
             {{value.0.question}}
             {{ value.0.answer}}
+           
+            {% if value.2 != 'None' and value.3 != 'None' %}
+            <div style="display: flex; justify-content: space-between; margin-top: 30px; margin-bottom: -60px;">
+                <img src = "{% static value.2 %}"   width="250" 
+           height="250">
+                <img src = "{% static value.3 %}"   width="250" 
+                height="250">
             </div>
-            {% if value.2 != 'None' %}
+            {% elif value.2 != 'None' %}
            <img src = "{% static value.2 %}"   width="250" 
            height="250">
-            {% endif %}
+            
+            {% elif value.3 != 'None' %}
+            <img src = "{% static value.3 %}"   width="250" 
+            height="250">
+             {% endif %} 
+            </div>
            </div>
            <div class="button-container"> 
-                <input class="back-button" type=button value="Back" onClick="javascript:history.go(-1);">
+            <input class="back-button" type=button value="BACK" onClick="javascript:history.go(-1);" style="width: 300px;">
            
             {% if key == last_form %}
             <div id ="registration-actions">
-                <button class="submit-button">Submit</button>
+                <button class="submit-button">SUBMIT</button>
             </div>
             
             {% else %}
             <div id ="registration-actions">
-                <button class="next-button">Next</button>
+                <button class="next-button">NEXT</button>
             </div>
             {% endif %}
            
