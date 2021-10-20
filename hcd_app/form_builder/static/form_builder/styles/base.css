@@ -1,5 +1,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Slab:wght@700&display=swap');
+@import url('http://fonts.cdnfonts.com/css/gotham');
+@font-face{
+  font-family: "Museo Slab";
+  src: url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.eot"); src: url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.woff") format("woff"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.svg#Museo Slab") format("svg");
+}
+@font-face{
+  font-family: "Gotham";
+  src: url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.eot"); src: url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.woff") format("woff"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.svg#Gotham") format("svg");
+}
+@font-face{
+  font-family: "Gotham Thin";
+  src: url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.eot"); src: url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.woff") format("woff"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/c28515d915b56f945499e8b40f1b1209.svg#Gotham Thin") format("svg");
+}
 * {
   box-sizing: border-box;
 }
@@ -10,6 +23,7 @@ body {
   flex-direction: column;
   color: #3E3E41;
 }
+
 main{
   background-color: #E5E5E5;
   width: 1000px;
@@ -21,15 +35,17 @@ main{
   /* overflow-x: 220;
   overflow-y: 306; */
 }
-h1,
-h2,
-h3 {
-  font-family: Museo Slab;
+h1 {
+  font-family: 'Museo Slab', Fallback, sans-serif;
   color: #222224;
   /* text-align: center; */
   margin-left: 10%;
 }
+h2,h3,body{
+  font-family: 'Gotham', Fallback, sans-serif;
+}
 header{
+  font-family: 'Museo Slab', Fallback, sans-serif;
   color: #F39222;
   font-size: 44px;
   text-align: center;
@@ -37,7 +53,8 @@ header{
   font-weight: bold;
 }
 p{
-  font-family: Arial;
+  font-family: 'Gotham Light', Fallback, sans-serif;
+  font-weight: 600;
   font-size: 34px;
   color: #222224;
   margin-left: 0%;
@@ -45,11 +62,16 @@ p{
   
 }
 .intro{
-  font-family: Arial;
+  font-family: 'Gotham Light', Fallback, sans-serif;;
   font-size: 34px;
+  font-weight: 500;
   color: #222224;
   margin-left: 10%;
   margin-right: 10%;
+  margin-top: 20px;
+}
+b{
+  font-weight: bolder;
 }
 
 button,
@@ -262,12 +284,43 @@ ul{
   cursor: pointer;
 }
 #id_answer_1:checked{
-  background-color: #114449;
+  background-color: hsl(185, 62%, 18%);
   color: white;
+ 
 }
 #id_answer_0:checked{
   background-color: #114449;
   color: white;
+  
+}
+#id_address_1{
+  width: 600px;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+#id_address_2{
+  width: 600px;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+#id_city{
+  width: 300px;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+#id_state{
+  width: 300px;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+#id_zip_code{
+  width: 200px;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+#id_build_date{
+  width: 200px;
+  font-size: 22px;
 }
 .question-number{
   margin-left: -20px;
@@ -278,5 +331,11 @@ ul{
   font-size: 15px; 
   display: flex; 
   justify-content: center;
+}
+
+#id_answer{
+  width: 50%;
+  font-size: 22px;
+ 
 }
 

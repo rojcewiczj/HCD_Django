@@ -30,7 +30,7 @@
             {% csrf_token %}
             <div style="display: flex; flex-direction: row; width: 650px;  align-items: center; justify-content: space-between; margin-top: 1em;">
              {% if value.1 == 'address_form' %}
-             <div style="margin-bottom : -80px; margin-top: 20px; display: flex; flex-direction: column; width: 650px;  align-items: center; justify-content: center;">
+             <div style="margin-bottom : -80px; margin-top: 20px; display: flex; flex-direction: column; width: 650px;  align-items: left; justify-content: center;">
             {{value.0}}
             </div>
             </div>
@@ -59,16 +59,16 @@
             </div>
            </div>
            <div class="button-container"> 
-            <input class="back-button" type=button value="Back" onClick="javascript:history.go(-1);" style="width: 300px;">
+            <input class="back-button" type=button value="BACK" onClick="javascript:history.go(-1);" style="width: 300px;">
            
             {% if key == last_form %}
             <div id ="registration-actions">
-                <button class="submit-button">Submit</button>
+                <button class="submit-button">SUBMIT</button>
             </div>
             
             {% else %}
             <div id ="registration-actions">
-                <button class="next-button">Next</button>
+                <button class="next-button">NEXT</button>
             </div>
             {% endif %}
            

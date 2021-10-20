@@ -82,7 +82,7 @@
         <a href="{% url 'fill_out_form' 5 0 0 %}"><strong class="nav-active">Survey</strong></a>
         </div>
     </div>
-    <h1 style="margin: 0 auto; color: #F39222; margin-top: 50px;">Housing Assistance Quiz</h1>
+    <header>Housing Assistance Quiz</header>
     {% if not_eligible == False %}
     <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">You may be eligibly for the following program(s):</h2>
     <div class="submitted-container" id="submitted-container">
@@ -173,7 +173,7 @@
             <p style="font-size: 15px; margin: 50px;">WAP is a program designed to assist low-income households in reducing their fuel costs while contributing to national energy conservation through increased energy efficiency and consumer education. Weatherization work can include various types of insulation, air sealing, duct sealing,
             </p>
             <div style="display: flex; flex-direction: column; align-items: space-between;">
-                <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 190px;">Eligibility Requirements</h5>
+                <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 220px;">Eligibility Requirements</h5>
                 <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;">
                     {% if elig_questions.ShelbyCounty == "yes" %}
                     <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="" style="margin-right: 5px;">
@@ -194,7 +194,7 @@
                     {% if elig_questions.LeadIssues == "yes" %}
                     <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
                     {% else %} 
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
+                    <p style="font-size: 15px; display: flex; justify-content: center; margin-bottom: 20px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
                     {% endif %}Your home does not have any known lead hazards</p></div>
         
             </div>

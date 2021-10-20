@@ -37,7 +37,7 @@ img_options = [
 class Build_question_form(forms.ModelForm):
     answer_format = forms.MultipleChoiceField(
         choices= answer_format_options,
-        widget= forms.CheckboxSelectMultiple()
+        widget= forms.RadioSelect()
     )
     img = forms.CharField(
        
