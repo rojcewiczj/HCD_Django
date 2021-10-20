@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.widgets import CheckboxSelectMultiple, RadioSelect
 from .models import Question
 from django.forms import ModelForm, TextInput, EmailInput
 
@@ -19,7 +19,7 @@ class Yes_or_no_form(forms.ModelForm):
         ("no" , "No")
     ]
     answer = forms.ChoiceField(
-        widget=CheckboxSelectMultiple,
+        widget=RadioSelect,
         choices= yes_or_no
     )
     # else:

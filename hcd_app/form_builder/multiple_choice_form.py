@@ -16,7 +16,7 @@ def Multiple_choice_helper(question):
         answer = forms.MultipleChoiceField(
             
             choices= options,
-            widget= forms.CheckboxSelectMultiple()
+            widget= forms.RadioSelect()
         )
         
         
