@@ -5,7 +5,7 @@ from localflavor.us.models import USStateField
 # Create your models here.
 
 
-class Program(models.Model):
+class Custom_Form(models.Model):
     title = models.CharField(max_length=50)
     question_order = models.CharField(max_length=10000, null=True, blank=True)
 
@@ -16,13 +16,12 @@ class Question(models.Model):
     second_img = models.CharField(max_length=250, null= True, blank= True)
     answer = models.CharField(max_length=250, null=True, blank=True)
     answer_format = models.CharField(max_length=50, default='text field')
-    programs = models.ManyToManyField(Program, blank=True, null=True)
+    Custom_Forms = models.ManyToManyField(Custom_Form, blank=True, null=True)
 
 
 class Address(models.Model):
     address_1 = models.CharField(("Street Address"), max_length=128)
     address_2 = models.CharField(("Street Address Line 2"), max_length=128, blank=True)
-
     city = models.CharField(("City"), max_length=64, default="Memphis")
     state = USStateField(("State"), default="TN")
     zip_code = models.CharField(("Zip Code"), max_length=5, default="38104")

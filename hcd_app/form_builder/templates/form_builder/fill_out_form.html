@@ -15,7 +15,7 @@
     <div id="nav">
         <img src="{% static 'form_builder/images/HCD_home.png' %}" >
         <div id="nav-links">
-        <a href="{% url 'all-programs'  %}">About</a>
+        <a href="{% url 'all-forms'  %}">About</a>
         <a href="{% url 'build_question_view' 5 %}">Resources</a>
         <a href="{% url 'fill_out_form' 5 0 0 %}"><strong class="nav-active">Survey</strong></a>
         </div>
@@ -81,8 +81,8 @@
         {% endfor %}
         <br>
         <!-- <div id ="registration-actions">
-        <a href="/form_builder/program_options/{{5}}" class="btn">return to program options</a>
-        <a href="/form_builder/" class="btn">return to programs</a>
+        <a href="/form_builder/form_options/{{5}}" class="btn">return to form options</a>
+        <a href="/form_builder/" class="btn">return to forms</a>
         </div> -->
   
     </main>
