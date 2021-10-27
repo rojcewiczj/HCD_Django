@@ -202,6 +202,11 @@ def view_question_submitted(request, custom_form_id):
         "field": "city",
         "expected"  :"Memphis"
     }
+
+    req_renter = {
+        "question" : "Which of the following best describes you?",
+        "answer_for_approval" : "I am a renter"
+    }
     
     req_income = {
         "question" : "What is your yearly household income?",
@@ -219,9 +224,17 @@ def view_question_submitted(request, custom_form_id):
         "question" : "Does the roof in your home have any problems?",
         "answer_for_approval" : "no"
     }
+    req_yes_roof = {
+        "question" : "Does the roof in your home have any problems?",
+        "answer_for_approval" : "yes"
+    }
     req_lead = {
         "question" : "Has anyone in the household tested positive for lead poisoning?",
         "answer_for_approval" : "no"
+    }
+    req_yes_plumbing = {
+        "question" : "Does the plumbing of your home have any problems?",
+        "answer_for_approval" : "yes"
     }
     req_child ={
         "question" : "Do you have any children born before 01-01-2000?",
@@ -229,6 +242,14 @@ def view_question_submitted(request, custom_form_id):
     }
     req_chipping_paint = {
         "question" : "Is paint coming off any walls or surface?",
+        "answer_for_approval" : "yes"
+    }
+    req_yes_HVAC = {
+        "question" : "Does the heating, cooling, or ventilation (HVAC) of your home have any problems?",
+        "answer_for_approval" : "yes"
+    }
+    req_accessibility = {
+        "question" : "Does your home need upgrades to help someone with a physical disability?",
         "answer_for_approval" : "yes"
     }
     statement_energy = {
@@ -263,7 +284,34 @@ def view_question_submitted(request, custom_form_id):
         "statement" : "A child who visits or lives in the home and is under the age of 6 has tested positive for lead poisoning",
         "requirements" : [req_child, req_lead]
     }
-
+    statement_renter = {
+        "statement" : "Deteriorating or chipping paint",
+        "requirements" : [req_renter]
+    }
+    statement_issues_roof = {
+        "statement" : "Issues with roof",
+        "requirements" : [req_yes_roof]
+    }
+    statement_issues_plumbing = {
+        "statement" : "Issues with roof",
+        "requirements" : [req_yes_plumbing]
+    }
+    statement_issues_HVAC = {
+        "statement" : "Issues with plumbing Issues with heating, cooling, and ventilation (HVAC)",
+        "requirements" : [req_yes_HVAC]
+    }
+    statement_energy_bills = {
+        "statement" : "High energy bills",
+        "requirements" : [req_energy]
+    }
+    statement_issues_accessibility = {
+        "statement" : "Issues with accessibility",
+        "requirements" : [req_accessibility]
+    }
+    statement_no_lead = {
+        "statement" : "Your home does not have any known lead hazards",
+        "requirements" : [req_lead]
+    }
     need_id = {
         "statement" : "Government issued ID"
     }
@@ -286,40 +334,163 @@ def view_question_submitted(request, custom_form_id):
         "statement" : "Birth certificates of any children under six"
     }
 
+    need_fee = {
+        "statement" : "$250 application fee (paid online)"
+    }
+    need_25_fee = {
+        "statement" : "$25 credit history fee (paid online)"
+    }
+    need_30_fee = {
+        "statement" : "$30 credit history fee (paid online)"
+    }
+    need_25_40_fee = {
+        "statement" : "$25 course fee per individual, $40 per couple"
+    }
+    ad_req_mortgage = {
+        "statement" : "You must be up to date on mortgage payments"
+    }
+    ad_req_taxes = {
+        "statement" : "You must be up to date on property taxes"
+    }
+    
+    ad_req_insurance = {
+        "statement" : "You must have homeowners insurance"
+    }
+
+    ad_req_credit_score = {
+        "statement" : "You must have a minimum credit score of 620"
+    }
+
+    ad_req_bankruptcy = {
+        "statement" : "You must be discharged or dismissed of any  bankruptcy charges over the last 2 years"
+    }
+
     call_weather = {
         "number" : "(901)-636-7366"
     }
     email_weather = {
         "email" : "weatherization@memphistn.gov"
+    } 
+    call_lead = {
+        "number" : "(901)-636-LEAD(5323)"
+    }
+    email_lead = {
+        "email" : "weatherization@memphistn.gov"
+    }
+    call_rental = {
+        "number" : "(901) 728-6936"
+    }
+    call_home_improvement = {
+        "number" : "901) 272-1122"
+    }
+    email_rental = {
+        "email" : "mcclelland@uhinc.org"
     }
     Weatherization = {
-        "Title": "Weatherization",
+        "title": "Weatherization",
+        "description": 
+            "WAP is a program designed to assist low-income households in reducing their fuel costs while contributing to national energy conservation through increased energy efficiency and consumer education. Weatherization work can include various types of insulation, air sealing, duct sealing, caulking, weather stripping, lighting upgrades, HVAC replacements and window replacements. Weatherization can reduce energy bills by as much as 25%.",
         "why_its_recommended": [[True, statement_energy]],
         "eligibility_requirements" : 
              [[True,statement_home], [True,statement_family_income], [True,statement_structural], [True,statement_lead]],
+        "additional_requirements": ["Your home must not have been weatherized in the past 15 years"],
         "what_you_need_to_apply":
             [need_id, need_income, need_energy, need_residence],
-        "what_to_expect_before_applying":
+        "what_to_expect_after_applying":
             "The City has 90 days to approve or deny the application. If your application is approved, a certified auditor will visit your home to perform an energy audit resulting in a work order with a list of recommended weatherization measures. However, please note that due to high demand, priority will be given to persons with disability, and the elderly. In addition, homes may be deferred due to poor structural conditions.",
         "need_help" : { "call" : call_weather, "email" : email_weather},
         "eligible" : True       
     }
+
     Lead_Mitigation = {
-        "Title" : "Lead Mitigation",
+        "title" : "Lead Mitigation",
         "description" :
             "The City of Memphis provides funding (in the form of a forgivable loan) to test and remediate lead hazards from the home. Lead is an environmental hazard that causes long term learning disabilities, such as brain damage, lower IQ levels, hyperactivity, and potent neurotoxins, especially in children. Deteriorating or chipping paint is a common source of lead poisoning in homes built before 1978.",
         "why_its_recommended": [[True, statement_build_date],[True, statement_paint],[True, statement_child_lead]],
         "eligibility_requirements" : 
              [[True,statement_home], [True,statement_build_date], [True,statement_paint], [True,statement_child_lead],[True, statement_family_income], [True, statement_structural]],
+        "additional_requirements": 
+             [ad_req_taxes, ad_req_mortgage],
         "what_you_need_to_apply":
             [need_id, need_income, need_homeowner_insurance, need_mortgage, need_birth_certificate],
-        "what_to_expect_before_applying":
+        "what_to_expect_after_applying":
             "City has 90 days to approve or deny the application. If your application is approved, an inspector will be sent to evaluate the condition of the house. Next, an environmental consultant will do a lead inspection and lead test the paint, dust, and soil. Blood lead testing from the Shelby County Health Department may also be performed on any children under the age of 6. HCD will coordinate with you when it is your turn. However, please note that due to high demand, priority will be given to families with pregnant household members or children under the age of 6. In addition, homes may be deferred due to poor structural conditions.",
-        "need_help" : { "call" : call_weather, "email" : email_weather},
+        "need_help" : { "call" : call_lead, "email" : email_lead},
         "eligible" : True       
     }
-    
-    programs_list = [Weatherization, Lead_Mitigation]
+    Rental_Preservation = {
+        "title" : "Rental Preservation Loan",
+        "description" :
+            "The United Housing Rental Preservation Loan offers $10,000-$80,000 at a fixed interest rate and a five year term with ten year amortization. The loan covers repairs and upgrades to rental property to preserve affordable quality housing for renters.",
+        "why_its_recommended": [[]],
+        "eligibility_requirements" : 
+            [[True, statement_home],[True, statement_renter]],
+        "additional_requirements": 
+             [ad_req_taxes, ad_req_mortgage, ad_req_insurance, ad_req_credit_score, ad_req_bankruptcy],
+        "what_you_need_to_apply":
+            [need_id, need_fee],
+        "what_to_expect_after_applying":
+            "You will be contacted within 3-10 business days to discuss next steps for your application.",
+        "need_help" : { "call" : call_rental, "email" : email_rental},
+        "eligible" : True       
+    }
+    Home_Improvement = {
+        "title" : "Home Improvement Loan",
+        "description" :
+            "The United Housing Home Improvement Loan offers $5,000-$15,000 at a low fixed interest rate and a 10 year term. The loan can be used for improvements like roofing upgrades, HVAC installations, weatherization, safety upgrades, accessibility features, and more.",
+        "why_its_recommended": [[True, statement_issues_roof],[True, statement_issues_plumbing],[True, statement_issues_HVAC],[True, statement_energy_bills],[True, statement_issues_accessibility]],
+        "eligibility_requirements" : 
+            [[True, statement_home],[True, statement_family_income],[True, statement_issues_roof],[True, statement_issues_plumbing],[True, statement_issues_HVAC],[True, statement_energy_bills],[True, statement_issues_accessibility], [True, statement_no_lead]],
+        "additional_requirements": 
+             [ad_req_taxes, ad_req_mortgage, ad_req_insurance, ad_req_credit_score, ad_req_bankruptcy],
+        "what_you_need_to_apply":
+            [need_id, need_fee],
+        "what_to_expect_after_applying":
+            "You will be contacted within 3-10 business days to discuss next steps for your application.",
+        "need_help" : { "call" : call_home_improvement, "email" : ""},
+        "eligible" : True       
+    }
+
+    Rental_Counseling  = {
+        "title" : "Rental Counseling",
+        "description":
+            "Work one-on-one with a United Housing counselor to build financial security and avoid eviction through: budget and credit coaching,breaking down the terms and conditions of your lease, connecting you to financial resources. What You’ll Need to Apply $25 credit history fee (paid online) What to Expect After Applying Within 24-72 hours, someone from UHI will contact you to schedule a 1 hour appointment.",
+        "why_its_recommended":[[]],
+        "eligibility_requirements": [[]],
+        "what_you_need_to_apply": 
+            [need_25_fee],
+        "what_to_expect_after_applying":
+            "Within 24-72 hours, someone from UHI will contact you to schedule a 1 hour appointment.",
+        "need_help" : {"call" : "", "email": ""},
+        "eligible": True
+    }
+    Money_Management  = {
+        "title" : "Money Management Course",
+        "description":
+            "The eHome Money Management Course is an online, on-demand, 2-hour course that empowers you to: understand savings and spending, understand credit, and manage personal finances",
+        "why_its_recommended":[[]],
+        "eligibility_requirements": [[]],
+        "what_you_need_to_apply": 
+            [need_30_fee],
+        "what_to_expect_after_applying":
+            "You can begin the course immediately. Once you finish the course, you will need to schedule a 1 hour time to speak with a housing counselor in order to receive a certificate of completion for the course.",
+        "need_help" : {"call" : "", "email": ""},
+        "eligible": True
+    }
+    Homebuyer_education  = {
+        "title" : "Homebuyer Education Course",
+        "description":
+            "The United Housing Homebuyer Education Course is an 8 hour course with a live English-speaking instructor*. The course covers many important topics to prepare for buying a home: Credit profile management, The importance of credit, How to improve credit over time, The different laws that regulate the use of credit, How to qualify for a mortgage loan, Selecting a house, Working with a Realtor, Home construction, Basic home maintenance, What happens at the loan closing, Predatory lenders and foreclosure ",
+        "why_its_recommended":[[]],
+        "eligibility_requirements": [[]],
+        "what_you_need_to_apply": 
+            [need_25_40_fee],
+        "what_to_expect_after_applying":
+            "Within 24-72 hours, someone from UHI will contact you to have you sign a disclosure agreement and fill out an assessment.",
+        "need_help" : {"call" : "", "email": ""},
+        "eligible": True
+    }
+    programs_list = [Weatherization, Lead_Mitigation, Rental_Preservation, Home_Improvement, Rental_Counseling, Money_Management, Homebuyer_education,]
    
 
     custom_form = Custom_Form.objects.get(id = 5)
@@ -368,49 +539,47 @@ def view_question_submitted(request, custom_form_id):
             for address in Address_objects:
                 address.delete()
 
-
     for i in range(len(programs_list)):
         recommend_program = True
         for statement in programs_list[i]["why_its_recommended"]:
-            for r in statement[1]["requirements"]:
-                if "field" in r.keys():
-                    if QandA["address_form"][-1]["fields"][r["field"]] != r["expected"]:
-                        recommend_program = False
-                elif r["answer_for_approval"][0] == ">" or r["answer_for_approval"][0] == "<":
-                    if r["answer_for_approval"][0] == ">":
-                        if QandA[r["question"]] <= int(r["answer_for_approval"][1:]):
+            if len(statement) > 0:
+                for r in statement[1]["requirements"]:
+                    if "field" in r.keys():
+                        if QandA["address_form"][-1]["fields"][r["field"]] != r["expected"]:
                             recommend_program = False
-                    elif r["answer_for_approval"][0] == "<":
-                        if QandA[r["question"]] >= int(r["answer_for_approval"][1:]):
-                            recommend_program = False
+                    elif r["answer_for_approval"][0] == ">" or r["answer_for_approval"][0] == "<":
+                        if r["answer_for_approval"][0] == ">":
+                            if QandA[r["question"]] <= int(r["answer_for_approval"][1:]):
+                                recommend_program = False
+                        elif r["answer_for_approval"][0] == "<":
+                            if QandA[r["question"]] >= int(r["answer_for_approval"][1:]):
+                                recommend_program = False
 
-                elif QandA[r["question"]] != r["answer_for_approval"]:
-                    recommend_program = False
+                    elif QandA[r["question"]] != r["answer_for_approval"]:
+                        recommend_program = False
         
         eligible = True
         for j in range(len(programs_list[i]["eligibility_requirements"])):
             approved = True
-            for r in programs_list[i]["eligibility_requirements"][j][1]["requirements"]:
-               
-                if "answer_for_approval" in r.keys():
-                    print(r['question'], QandA[r['question']], r["answer_for_approval"])
-                if "field" in r.keys():
-                    if QandA["address_form"][-1]["fields"][r["field"]] != r["expected"]:
-                        approved = False
-                elif r["answer_for_approval"][0] == ">" or r["answer_for_approval"][0] == "<":
+            if len(programs_list[i]["eligibility_requirements"][j]) > 0:
+                for r in programs_list[i]["eligibility_requirements"][j][1]["requirements"]:    
+                    if "field" in r.keys():
+                        if QandA["address_form"][-1]["fields"][r["field"]] != r["expected"]:
+                            approved = False
+                    elif r["answer_for_approval"][0] == ">" or r["answer_for_approval"][0] == "<":
+                        
+                        if r["answer_for_approval"][0] == ">":
+                            if int(QandA[r["question"]]) <= int(r["answer_for_approval"][1:]):
+                                approved = False
+                        elif r["answer_for_approval"][0] == "<":
+                            if int(QandA[r["question"]]) >= int(r["answer_for_approval"][1:]):
+                                approved = False
                     
-                    if r["answer_for_approval"][0] == ">":
-                        if int(QandA[r["question"]]) <= int(r["answer_for_approval"][1:]):
-                            approved = False
-                    elif r["answer_for_approval"][0] == "<":
-                        if int(QandA[r["question"]]) >= int(r["answer_for_approval"][1:]):
-                            approved = False
+                    elif QandA[r["question"]] != r["answer_for_approval"]:
+                        approved = False
                 
-                elif QandA[r["question"]] != r["answer_for_approval"]:
-                    approved = False
-            
-            programs_list[i]["eligibility_requirements"][j][0] = approved
-           
+                programs_list[i]["eligibility_requirements"][j][0] = approved
+                
             if approved == False:
                 eligible = False
                 programs_list[i]["eligible"] = False
@@ -469,8 +638,10 @@ def view_question_submitted(request, custom_form_id):
     Programs = {
         "weatherizaton" : ["pass", Weatherization]
     }
-
+    for programs in programs_list:
+        print(programs["description"])
     return render(request, 'form_builder/view_question_submitted.html',{
+        "program_list" : programs_list,
         'questions_submitted': questions_submitted,
         'elig_questions': eligibility_questions_final,
         'address_submitted' : address_submitted[0]['fields'],
