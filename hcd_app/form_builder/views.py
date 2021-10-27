@@ -352,6 +352,9 @@ def view_question_submitted(request, custom_form_id):
     ad_req_taxes = {
         "statement" : "You must be up to date on property taxes"
     }
+    ad_req_weather = {
+        "statement" : "Your home must not have been weatherized in the past 15 years"
+    }
     
     ad_req_insurance = {
         "statement" : "You must have homeowners insurance"
@@ -393,7 +396,7 @@ def view_question_submitted(request, custom_form_id):
         "why_its_recommended": [[True, statement_energy]],
         "eligibility_requirements" : 
              [[True,statement_home], [True,statement_family_income], [True,statement_structural], [True,statement_lead]],
-        "additional_requirements": ["Your home must not have been weatherized in the past 15 years"],
+        "additional_requirements": [ad_req_weather],
         "what_you_need_to_apply":
             [need_id, need_income, need_energy, need_residence],
         "what_to_expect_after_applying":
@@ -457,6 +460,7 @@ def view_question_submitted(request, custom_form_id):
             "Work one-on-one with a United Housing counselor to build financial security and avoid eviction through: budget and credit coaching,breaking down the terms and conditions of your lease, connecting you to financial resources. What You’ll Need to Apply $25 credit history fee (paid online) What to Expect After Applying Within 24-72 hours, someone from UHI will contact you to schedule a 1 hour appointment.",
         "why_its_recommended":[[]],
         "eligibility_requirements": [[]],
+        "additional_requirements": [[]],
         "what_you_need_to_apply": 
             [need_25_fee],
         "what_to_expect_after_applying":
@@ -470,6 +474,7 @@ def view_question_submitted(request, custom_form_id):
             "The eHome Money Management Course is an online, on-demand, 2-hour course that empowers you to: understand savings and spending, understand credit, and manage personal finances",
         "why_its_recommended":[[]],
         "eligibility_requirements": [[]],
+        "additional_requirements": [[]],
         "what_you_need_to_apply": 
             [need_30_fee],
         "what_to_expect_after_applying":
@@ -483,6 +488,7 @@ def view_question_submitted(request, custom_form_id):
             "The United Housing Homebuyer Education Course is an 8 hour course with a live English-speaking instructor*. The course covers many important topics to prepare for buying a home: Credit profile management, The importance of credit, How to improve credit over time, The different laws that regulate the use of credit, How to qualify for a mortgage loan, Selecting a house, Working with a Realtor, Home construction, Basic home maintenance, What happens at the loan closing, Predatory lenders and foreclosure ",
         "why_its_recommended":[[]],
         "eligibility_requirements": [[]],
+        "additional_requirements": [[]],
         "what_you_need_to_apply": 
             [need_25_40_fee],
         "what_to_expect_after_applying":
@@ -638,10 +644,45 @@ def view_question_submitted(request, custom_form_id):
     Programs = {
         "weatherizaton" : ["pass", Weatherization]
     }
+
     for programs in programs_list:
-        print(programs["description"])
+        print(programs["title"])
+
+    program_list_view = []
+    for program in programs_list:
+        new_program = []
+        for key in program:
+            new_catagory = []
+            if key == "title" or key == "description" or key == "what_to_expect_after_applying" or key == "eligible":
+                new_catagory.append(program[key])
+            elif key == "why_its_recommended" or key == "eligibility_requirements":
+                for statement in program[key]: 
+                    new_statement = []
+                    if len(statement) > 0:
+                        new_statement.append(statement[0])
+                        new_statement.append(statement[1]["statement"])
+                    new_catagory.append(new_statement)
+            elif key == "what_you_need_to_apply" or key == "additional_requirements":
+                for statement in program[key]:
+                    if len(statement) > 0:
+                        new_catagory.append(statement["statement"])
+            elif key == "need_help":
+                if program[key]["call"]:
+                    new_catagory.append(program[key]["call"]["number"])
+                else:
+                    new_catagory.append("")
+                if program[key]["email"]:
+                    new_catagory.append(program[key]["email"]["email"])
+                else:
+                    new_catagory.append("")
+
+            new_program.append(new_catagory)
+        program_list_view.append(new_program)
+    
+    print(program_list_view[0][6],program_list_view[0][7])
+    
     return render(request, 'form_builder/view_question_submitted.html',{
-        "program_list" : programs_list,
+        "program_list" : program_list_view,
         'questions_submitted': questions_submitted,
         'elig_questions': eligibility_questions_final,
         'address_submitted' : address_submitted[0]['fields'],

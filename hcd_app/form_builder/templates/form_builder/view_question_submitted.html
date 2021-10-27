@@ -83,73 +83,72 @@
         </div>
     </div>
     <header>Housing Assistance Quiz</header>
-    {% if not_eligible == False %}
+   
     <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">You may be eligibly for the following program(s):</h2>
+
+    {% for program in program_list %}
     <div class="submitted-container" id="submitted-container">
         
          <div style="display: flex; flex-direction: column; align-items: left; justify-content: left; background-color: #114449;">
-             <h1 style="margin-left: 50px; color: #E5E5E5"">Weatherization Assistance Program</h1>
+             <h1 style="margin-left: 50px; color: #E5E5E5"">{{program.0.0}}</h1>
              <p style="margin-left: 50px; font-size: 18px; color: #E5E5E5"">Provided by Housing and Community Development</p>
          
         
         </div> 
 
-    <p style="font-size: 15px; margin: 50px;">WAP is a program designed to assist low-income households in reducing their fuel costs while contributing to national energy conservation through increased energy efficiency and consumer education. Weatherization work can include various types of insulation, air sealing, duct sealing,
+    <p style="font-size: 15px; margin: 50px;">{{program.1.0}}
         </p>
         <div>
-            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 210px;">Why its recommended</h5>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px;" >
-                {% if elig_questions.EnergyBurden == "yes" %}
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="" style="margin-right: 5px;">
-                {% else %} 
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                {% endif %}
-                    Your home has a high energy burden</p></div>
+            {% if program.2|length > 0 %}
+                <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 210px;">Why its recommended</h5>
+                {% for statement in program.2 %}
+                <div style="display: flex; margin-top: -30px; margin-left: 50px;" >
+                    {% if statement.0 == True %}
+                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="" style="margin-right: 5px;">
+                    {% else %} 
+                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
+                    {% endif %}
+                        {{statement.1}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
         <div style="display: flex; flex-direction: column; align-items: space-between;">
+            {% if program.3|length > 0 %}
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 220px;">Eligibility Requirements </h5>
+            {% for statement in program.3 %}
             <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;">
-                {% if elig_questions.ShelbyCounty == "yes" %}
+                {% if statement.0 == True %}
                 <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
                 {% else %} 
                 <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                {% endif %}</p><p style="font-size: 15px;">You rent or own a home in Shelby County</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   {% if elig_questions.IncomeFamily == "yes" %}
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
-                {% else %} 
-                <p style="font-size: 15px; display: flex; justify-content: center; "><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                {% endif %}Your yearly household income is less than $45,000 for a family of {{family_size}}</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   {% if elig_questions.StructuralIssues == "yes" %}
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
-                {% else %} 
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                {% endif %}Your home does not have any serious structural issues</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   
-                {% if elig_questions.LeadIssues == "yes" %}
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
-                {% else %} 
-                <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                {% endif %}Your home does not have any known lead hazards</p></div>
-    
+                {% endif %}</p><p style="font-size: 15px;">{{statement.1}}</p></div>
+            {% endfor %}
+           {% endif %}
         </div>
         <div style="display: flex; flex-direction: column; align-items: space-between;" id="what_you_need">
+        {% if program.4|length > 0 %}
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 230px;">What You Need to Apply</h5>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;"></p><p style="font-size: 15px;">Government issued ID</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;">Proof of income for the past 3 months</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;">Energy bills for the past 3 months</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;">Proof of homeownership or residence</p></div>
-    
+             {% for need in program.4 %}
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;"></p><p style="font-size: 15px;">{{need}}</p></div>
+            {% endfor %}
+        {% endif %}
         </div>
 
         <div id="what_to_expect">
-            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 300px;">What to Expect Before Applying</h5>
-            <p style="font-size: 15px; margin-left: 50px; margin-right: 50px;">The City has 90 days to approve or deny the application. If your application is approved, a certified auditor will visit your home to perform an energy audit resulting in a work order with a list of recommended weatherization measures. However, please note that due to high demand, priority will be given to persons with disability, and the elderly. In addition, homes may be deferred due to poor structural conditions.
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 300px;">What to Expect After Applying</h5>
+            <p style="font-size: 15px; margin-left: 50px; margin-right: 50px;">{{program.6.0}}
             </p>
         </div>
         <div id="need_help">
+            
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px;border-bottom: solid; width: 110px;">Need Help?</h5>
-            <div style="display: flex; margin-top: -60px; margin-left: 50px; margin-top: -10px;" ><img src="{% static 'form_builder/images/Vector.png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">Call: (901) 636-7366</p></div>
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: -10px;" ><img src="{% static 'form_builder/images/Vector (1).png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">E-mail: weatherization@memphistn.gov</p></div>
+            {% if program.7.0 %}
+            <div style="display: flex; margin-top: -60px; margin-left: 50px; margin-top: -10px;" ><img src="{% static 'form_builder/images/Vector.png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">Call: {{program.7.0}}</p></div>
+            {% endif %}
+            {% if program.7.1 %}
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: -10px;" ><img src="{% static 'form_builder/images/Vector (1).png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">E-mail: {{program.7.1}}</p></div>
+            {% endif %}
         </div>
     
    
@@ -162,8 +161,12 @@
         </div>
         <button  onclick = "switch_collapse()" id="collapse_btn"><img id="left-arrow" src=""> <p id="button_text">text</p><img id = "right-arrow" src=""></button>
     </div>
-    {% else %}   
-     <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">Based on your responses you are not eligible for the following program(s):</h2>
+   
+   
+    {% endfor %}
+  
+
+     <!-- <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">Based on your responses you are not eligible for the following program(s):</h2>
     <div class="submitted-container" style="border: 5px solid #A0A0A1;">
         
         <div style="display: flex; flex-direction: column; align-items: left; justify-content: left; background-color:#A0A0A1;">
@@ -197,7 +200,7 @@
                     <p style="font-size: 15px; display: flex; justify-content: center; margin-bottom: 20px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
                     {% endif %}Your home does not have any known lead hazards</p></div>
         
-            </div>
+            </div> -->
 
         
        
@@ -208,7 +211,6 @@
 
 
 
-
-    {% endif %}
+    
     </body>
 </html>
