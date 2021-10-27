@@ -15,7 +15,7 @@
     <div id="nav">
         <img src="{% static 'form_builder/images/HCD_home.png' %}" >
         <div id="nav-links">
-        <a href="{% url 'all-programs'  %}"><strong class="nav-active">About</strong></a>
+        <a href="{% url 'all-forms'  %}"><strong class="nav-active">About</strong></a>
         <a href="{% url 'build_question_view' 5 %}">Resources</a>
         <a href="{% url 'fill_out_form' 5 0 0 %}">Survey</a>
         </div>
@@ -26,7 +26,7 @@
         <div class="container">
             <header>Housing Assistance Quiz</header>
             <br/>
-            <div class="intro">If you are a resident of Shelby County, Tennessee and your home requires repairs, you maybe able to get assistance.<br/><br/>Take this short quiz to find out what programs you may qualify for.<b> It should take less than 2 minutes.</b></div>
+            <div class="intro">If you are a resident of Shelby County, Tennessee and your home requires repairs, you maybe able to get assistance.<br/><br/>Take this short quiz to find out what forms you may qualify for.<b> It should take less than 2 minutes.</b></div>
              <a href="{% url 'fill_out_form' 5 0 0 %}"><button style="width: 300px;">GET STARTED</button></a>
     </div>
         

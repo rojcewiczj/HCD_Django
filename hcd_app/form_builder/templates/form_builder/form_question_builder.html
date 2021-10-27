@@ -40,7 +40,7 @@
     <div id="nav">
         <img src="{% static 'form_builder/images/HCD_home.png' %}" >
         <div id="nav-links">
-        <a href="{% url 'all-programs'  %}">About</a>
+        <a href="{% url 'all-forms'  %}">About</a>
         <a href="{% url 'build_question_view' 5 %}"><strong class="nav-active">Resources</strong></a>
         <a href="{% url 'fill_out_form' 5 0 0 %}">Survey</a>
         </div>
@@ -71,7 +71,7 @@
                  <a class="btn" href="{% url 'question_organizer' 5 %}">Organize</a>
                 <button>Submit</button>
                
-                <!-- <a href="/form_builder/program_options/{{5}}" class="btn">return to program options</a> -->
+                <!-- <a href="/form_builder/form_options/{{5}}" class="btn">return to form options</a> -->
             </div>
             
         </form>

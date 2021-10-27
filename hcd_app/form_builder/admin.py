@@ -3,5 +3,5 @@ from django.contrib import admin
 
 
 # Register your models here.
-myModels = [models.Program, models.Question]
+myModels = [models.Custom_Form, models.Question, models.Address]
 admin.site.register(myModels)
