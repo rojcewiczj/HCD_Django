@@ -649,6 +649,7 @@ def view_question_submitted(request, custom_form_id):
         print(programs["title"])
 
     program_list_view = []
+    i = 0
     for program in programs_list:
         new_program = []
         for key in program:
@@ -677,9 +678,14 @@ def view_question_submitted(request, custom_form_id):
                     new_catagory.append("")
 
             new_program.append(new_catagory)
+          
+        
         program_list_view.append(new_program)
     
-    print(program_list_view[0][6],program_list_view[0][7])
+   
+    for i in range(0, len(program_list_view)):
+        program_list_view[i].append(i)
+        print(program_list_view[i][8])
     
     return render(request, 'form_builder/view_question_submitted.html',{
         "program_list" : program_list_view,
