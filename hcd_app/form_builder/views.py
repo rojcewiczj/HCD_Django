@@ -293,7 +293,7 @@ def view_question_submitted(request, custom_form_id):
         "requirements" : [req_yes_roof]
     }
     statement_issues_plumbing = {
-        "statement" : "Issues with roof",
+        "statement" : "Issues with plumbing",
         "requirements" : [req_yes_plumbing]
     }
     statement_issues_HVAC = {
@@ -502,23 +502,6 @@ def view_question_submitted(request, custom_form_id):
     custom_form = Custom_Form.objects.get(id = 5)
     questions_submitted = []
     
-    structural_issues = {
-        'paint' : "structural",
-        'roof' : "structural",
-
-    }
- 
-    eligibility_questions = {
-        "Memphis": "ShelbyCounty",
-        "income": "IncomeFamily",
-        "structural": "StructuralIssues",
-        "lead"     : "LeadIssues",
-        "live in your home" : "",
-        "energy" : "EnergyBurden"
-    }
-    eligibility_questions_final ={
-
-    }
     questions = Question.objects.all()
 
     QandA = {} # added for test
@@ -536,14 +519,7 @@ def view_question_submitted(request, custom_form_id):
         if 'address_form' in array_order:
             address_submitted = serializers.serialize( "python", Address.objects.all() )
             QandA["address_form"] = address_submitted #added for test
-            if address_submitted[-1]['fields']['city'] == "Memphis":
-                eligibility_questions_final["ShelbyCounty"] = "yes"
-            else:
-                eligibility_questions_final["ShelbyCounty"] = "no"
-        else:
-            Address_objects = Address.objects.all()
-            for address in Address_objects:
-                address.delete()
+        
 
     for i in range(len(programs_list)):
         recommend_program = True
@@ -588,7 +564,7 @@ def view_question_submitted(request, custom_form_id):
                 
             if approved == False:
                 eligible = False
-                programs_list[i]["eligible"] = False
+        programs_list[i]["eligible"] = eligible
             
     
         
@@ -600,22 +576,7 @@ def view_question_submitted(request, custom_form_id):
     income_level = False
     family_size = 0
 
-    for question in questions_submitted:
-        for key, value in structural_issues.items():
-            if key in question.question:
-                eligibility_questions_final[eligibility_questions[structural_issues[key]]] = question.answer
-        for key, value in eligibility_questions.items():
-            if key in question.question:
-                if key == "income":
-                    income = int(question.answer)
-                    if income < 45000:
-                        income_level = True
-                elif key == "live in your home":
-                    family_size = int(question.answer)
-                else:
-                    eligibility_questions_final[value] = question.answer
-    if income_level == True and family_size > 5:
-         eligibility_questions_final["IncomeFamily"] = "yes"      
+   
                         
 
     address_submitted = [{'fields' : ""}]
@@ -625,28 +586,11 @@ def view_question_submitted(request, custom_form_id):
         if 'address_form' in array_order:
             address_submitted = serializers.serialize( "python", Address.objects.all() )
             QandA["address_form"] = address_submitted #added for test
-            if address_submitted[-1]['fields']['city'] == "Memphis":
-                eligibility_questions_final["ShelbyCounty"] = "yes"
-            else:
-                eligibility_questions_final["ShelbyCounty"] = "no"
         else:
             Address_objects = Address.objects.all()
             for address in Address_objects:
                 address.delete()
 
-    
-    not_eligible = False
-    for key,value in eligibility_questions_final.items():
-        if value == "no":
-            not_eligible = True 
-
-
-    Programs = {
-        "weatherizaton" : ["pass", Weatherization]
-    }
-
-    for programs in programs_list:
-        print(programs["title"])
 
     program_list_view = []
     i = 0
@@ -690,11 +634,10 @@ def view_question_submitted(request, custom_form_id):
     return render(request, 'form_builder/view_question_submitted.html',{
         "program_list" : program_list_view,
         'questions_submitted': questions_submitted,
-        'elig_questions': eligibility_questions_final,
         'address_submitted' : address_submitted[0]['fields'],
         'family_size' : family_size,
         'custom_form_id': custom_form_id,
-        'not_eligible': not_eligible
+        
     } )
 
 

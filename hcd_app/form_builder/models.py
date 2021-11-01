@@ -26,7 +26,8 @@ class Address(models.Model):
     state = USStateField(("State"), default="TN")
     zip_code = models.CharField(("Zip Code"), max_length=5, default="38104")
     build_date = models.CharField(("Home Build Date"), max_length=128, default="1987")
-    
+
+
     
     
 
