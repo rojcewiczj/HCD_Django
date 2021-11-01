@@ -3,39 +3,23 @@
 <html lang="en">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script >
-        window.onload = function collapse(){
-            var button = document.getElementById("button_text")
-            var leftArrow = document.getElementById("left-arrow")
-            var rightArrow = document.getElementById("right-arrow")
-            var container = document.getElementById("submitted-container")
-            var needs = document.getElementById("what_you_need")
-            var expectations = document.getElementById("what_to_expect")
-            var help = document.getElementById("need_help")
-            container.style.height = "920px"
-            container.style.display = "flex"
-            needs.style.display = 'None'
-            expectations.style.display = 'None'
-            help.style.display = 'None'
-            button.innerHTML = "CLICK TO EXPAND FOR MORE INFORMATION"
-            button.style.margin ="0"
-            leftArrow.src = `/static/form_builder/images/ArrowDown.png`
-            rightArrow.src = `/static/form_builder/images/ArrowDown.png`
+    
+  
 
-
-       }
-       const switch_collapse = () => { 
-            var button = document.getElementById("button_text")
-            var leftArrow = document.getElementById("left-arrow")
-            var rightArrow = document.getElementById("right-arrow")
-            var container = document.getElementById("submitted-container")
-            var needs = document.getElementById("what_you_need")
-            var expectations = document.getElementById("what_to_expect")
-            var help = document.getElementById("need_help")
-            if(container.style.height != "920px"){
-                container.style.height = "920px"
-                container.style.display = "flex"
+       
+       const switch_collapse = (program_clicked) => { 
+            var button = document.getElementById(`button_text${program_clicked}`)
+            var leftArrow = document.getElementById(`left-arrow${program_clicked}`)
+            var rightArrow = document.getElementById(`right-arrow${program_clicked}`)
+            var container = document.getElementById(`submitted-container${program_clicked}`)
+            var needs = document.getElementById(`what_you_need${program_clicked}`)
+            var expectations = document.getElementById(`what_to_expect${program_clicked}`)
+            var additional_requirements = document.getElementById(`additional_requirements${program_clicked}`)
+            var help = document.getElementById(`need_help${program_clicked}`)
+            if(button.innerHTML != "CLICK TO EXPAND FOR MORE INFORMATION"){
                 needs.style.display = 'None'
                 expectations.style.display = 'None'
+                additional_requirements.style.display = 'None'
                 help.style.display = 'None'
                 button.innerHTML = "CLICK TO EXPAND FOR MORE INFORMATION"
                 button.style.margin ="0"
@@ -46,20 +30,14 @@
                 container.style.height = ""
                 needs.style.display = ''
                 expectations.style.display = ''
+                additional_requirements.style.display = ''
                 help.style.display = ''
                 button.innerHTML = "CLICK TO COLLAPSE"
                 leftArrow.src = `/static/form_builder/images/ArrowUp.png`
                 rightArrow.src = `/static/form_builder/images/ArrowUp.png`
            }
           
-        // console.log(value)
-        //     var img = document.getElementById("preview")
-        //     img.src = `/static/${value}`
-        //     if(value == 'None'){
-        //         img.src = ''
-        //         console.log("this is nothing")
-        //     }
-        //     console.log(img.src)
+       
        }
    
 
@@ -73,7 +51,7 @@
     <link rel="stylesheet" href="{% static 'form_builder/styles/starter.css' %}">
    
 </head>
-<body>
+<body >
     <div id="nav">
         <img src="{% static 'form_builder/images/HCD_home.png' %}" >
         <div id="nav-links">
@@ -85,9 +63,15 @@
     <header>Housing Assistance Quiz</header>
    
     <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">You may be eligibly for the following program(s):</h2>
-
+     
     {% for program in program_list %}
-    <div class="submitted-container" id="submitted-container">
+    {% if program.8.0 == True %}
+    <div class="submitted-container{{program.9}}" id="submitted-container{{program.9}}" style="  background-color: #E5E5E5;
+    margin:70px auto;
+    width: 800px;
+    border: 10px solid #114449;
+    display: flex;
+    flex-direction: column;">
         
          <div style="display: flex; flex-direction: column; align-items: left; justify-content: left; background-color: #114449;">
              <h1 style="margin-left: 50px; color: #E5E5E5"">{{program.0.0}}</h1>
@@ -99,48 +83,75 @@
     <p style="font-size: 15px; margin: 50px;">{{program.1.0}}
         </p>
         <div>
-            {% if program.2|length > 0 %}
+            {% if program.2.0|length > 0 %}
                 <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 210px;">Why its recommended</h5>
                 {% for statement in program.2 %}
                 <div style="display: flex; margin-top: -30px; margin-left: 50px;" >
                     {% if statement.0 == True %}
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="" style="margin-right: 5px;">
+                    <div style="display: flex; justify-content: center;align-items: center; margin-top: 10px; margin-bottom: 10px;">
+                 <img src="{% static 'form_builder/images/greenCheck.png'%}" alt="" style="margin-right: 5px;">
                     {% else %} 
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
+                  <img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
                     {% endif %}
-                        {{statement.1}}</p>
+                       <p style="font-size: 15px;"> {{statement.1}}</p></div>
                     </div>
                 {% endfor %}
             {% endif %}
         </div>
         <div style="display: flex; flex-direction: column; align-items: space-between;">
-            {% if program.3|length > 0 %}
+            {% if program.3.0|length > 0 %}
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 220px;">Eligibility Requirements </h5>
             {% for statement in program.3 %}
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;">
+            <div style="display: flex; margin-top: -30px; margin-left: 50px; " >
+             <div style="display: flex; justify-content: center;align-items: center; margin-top: 10px; margin-bottom: 10px;">
                 {% if statement.0 == True %}
-                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
+             <img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
                 {% else %} 
-                <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                {% endif %}</p><p style="font-size: 15px;">{{statement.1}}</p></div>
+               <img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
+                {% endif %}<p style="font-size: 15px;">{{statement.1}}</p></div>
+            </div>
             {% endfor %}
            {% endif %}
         </div>
-        <div style="display: flex; flex-direction: column; align-items: space-between;" id="what_you_need">
-        {% if program.4|length > 0 %}
+        <div style="display: None; flex-direction: column; align-items: space-between;" id="additional_requirements{{program.9}}">
+            {% if program.4|length > 0 %}
+                <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 230px;">Additional Requirements</h5>
+                 {% for ad_req in program.4 %}
+                <div style="display: flex; margin-top: -30px; margin-left: 50px;" >
+                    <div style="display: flex; justify-content: center;align-items: center; margin-top: 10px; margin-bottom: 10px;">
+                    <img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;">
+                    <p style="font-size: 15px;">{{ad_req}}</p></div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            </div>
+        <div style="display: None; flex-direction: column; align-items: space-between;" id="what_you_need{{program.9}}">
+        {% if program.5|length > 0 %}
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 230px;">What You Need to Apply</h5>
-             {% for need in program.4 %}
-            <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;"></p><p style="font-size: 15px;">{{need}}</p></div>
+             {% for need in program.5 %}
+            <div style="display: flex; margin-top: -30px; margin-left: 50px;" >
+                <div style="display: flex; justify-content: center;align-items: center; margin-top: 10px; margin-bottom: 10px;">
+                    <img src="{% static 'form_builder/images/greyCheck.png'%}" alt="" style="margin-right: 5px;"><p style="font-size: 15px;">{{need}}</p></div>
+                </div>
             {% endfor %}
         {% endif %}
         </div>
-
-        <div id="what_to_expect">
+     
+        <div id="need_help{{program.9}}" style="display: None;">
+            {% if program.7.0 %}
+            <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px;border-bottom: solid; width: 110px; margin-bottom: 10px;">Need Help?</h5>
+            <div style="display: flex; margin-left: 50px; " ><img src="{% static 'form_builder/images/Vector.png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">Call: {{program.7.0}}</p></div>
+            {% endif %}
+            {% if program.7.1 %}
+            <div style="display: flex; margin-top: -40px; margin-left: 50px;" ><img src="{% static 'form_builder/images/Vector (1).png'%}" alt="" width= 15px; height = 15px; style="margin-right: 10px;">E-mail: {{program.7.1}}</p></div>
+            {% endif %}
+        </div>
+        <div id="what_to_expect{{program.9}}" style="display: None;">
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 300px;">What to Expect After Applying</h5>
             <p style="font-size: 15px; margin-left: 50px; margin-right: 50px;">{{program.6.0}}
             </p>
         </div>
-        <div id="need_help">
+        <div id="need_help{{program.9}}" style="display: None;">
             
             <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px;border-bottom: solid; width: 110px;">Need Help?</h5>
             {% if program.7.0 %}
@@ -159,53 +170,59 @@
         <div style="display: flex; justify-content: right;">
          <button style="width: 150px">Apply</button>
         </div>
-        <button  onclick = "switch_collapse()" id="collapse_btn"><img id="left-arrow" src=""> <p id="button_text">text</p><img id = "right-arrow" src=""></button>
+        <button onclick = "switch_collapse(program_clicked='{{program.9}}')" id="collapse_btn{{program.9}}" style="  width: 780px;
+        height: 50px;
+        background-color: #114449;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border: none;
+        margin:auto;
+        margin-bottom: 0px;"><img id="left-arrow{{program.9}}" src="/static/form_builder/images/ArrowDown.png"> <p id="button_text{{program.9}}" 
+        style = "font-size: 18px;
+            color: #FFFFFF;
+            padding:0px;
+            margin : 0px;">CLICK TO EXPAND FOR MORE INFORMATION</p><img id = "right-arrow{{program.9}}" src="/static/form_builder/images/ArrowDown.png"></button>
     </div>
    
-   
+    {% endif %}
     {% endfor %}
   
+    
+     <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">Based on your responses you are not eligible for the following program(s):</h2>
 
-     <!-- <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">Based on your responses you are not eligible for the following program(s):</h2>
-    <div class="submitted-container" style="border: 5px solid #A0A0A1;">
-        
+         {% for program in program_list %}
+     {% if program.8.0 == False %}
+    <div class="submitted-container" style="border: 5px solid #A0A0A1;margin:70px auto; padding-bottom: 40px;
+    width: 800px; display: flex; flex-direction: column;">
+    
         <div style="display: flex; flex-direction: column; align-items: left; justify-content: left; background-color:#A0A0A1;">
-            <h1 style="margin-left: 50px; color: #E5E5E5"">Weatherization Assistance Program</h1>
+            <h1 style="margin-left: 50px; color: #E5E5E5"">{{program.0.0}}</h1>
             <p style="margin-left: 50px; font-size: 18px; color: #E5E5E5"">Provided by Housing and Community Development</p>
         </div>
-            <p style="font-size: 15px; margin: 50px;">WAP is a program designed to assist low-income households in reducing their fuel costs while contributing to national energy conservation through increased energy efficiency and consumer education. Weatherization work can include various types of insulation, air sealing, duct sealing,
+            <p style="font-size: 15px; margin: 50px;">{{program.1.0}}
             </p>
             <div style="display: flex; flex-direction: column; align-items: space-between;">
-                <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 220px;">Eligibility Requirements</h5>
+                {% if program.3|length > 0 %}
+                <h5 style="font-size: 18px; font-weight: 600; margin-left: 50px; border-bottom: solid; width: 220px;">Eligibility Requirements </h5>
+                {% for statement in program.3 %}
                 <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: .5px;" ><p style="font-size: 15px;">
-                    {% if elig_questions.ShelbyCounty == "yes" %}
-                    <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt="" style="margin-right: 5px;">
-                    {% else %} 
-                    <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="" style="margin-right: 5px;">
-                    {% endif %}</p><p style="font-size: 15px; display: flex; justify-content: center;">You rent or own a home in Shelby County</p></div>
-                <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   {% if elig_questions.IncomeFamily == "yes" %}
+                    {% if statement.0 == True %}
                     <p style="font-size: 15px;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
                     {% else %} 
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                    {% endif %}Your yearly household income is less than $45,000 for a family of {{family_size}}</p></div>
-                <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   {% if elig_questions.StructuralIssues == "yes" %}
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
-                    {% else %} 
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt="" style="margin-right: 5px;">
-                    {% endif %}Your home does not have any serious structural issues</p></div>
-                <div style="display: flex; margin-top: -30px; margin-left: 50px; margin-top: 3px;" ><p style="font-size: 15px;">   
-                    {% if elig_questions.LeadIssues == "yes" %}
-                    <p style="font-size: 15px; display: flex; justify-content: center;"><img src="{% static 'form_builder/images/greenCheck.png'%}" alt=""style="margin-right: 5px;">
-                    {% else %} 
-                    <p style="font-size: 15px; display: flex; justify-content: center; margin-bottom: 20px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
-                    {% endif %}Your home does not have any known lead hazards</p></div>
+                    <p style="font-size: 15px;"><img src="{% static 'form_builder/images/orangeEx.png'%}" alt=""style="margin-right: 5px;">
+                    {% endif %}</p><p style="font-size: 15px;">{{statement.1}}</p></div>
+            {% endfor %}
+           {% endif %}
+         
         
-            </div> -->
-
+            </div>
         
        
    </div> 
-
+       
+            {% endif %}
+            {% endfor %}
 
 
 
