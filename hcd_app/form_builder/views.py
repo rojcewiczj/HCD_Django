@@ -24,6 +24,12 @@ def index(request):
     })
 
 
+def resource_view(request, custom_form_id):
+    
+    return render(request, 'form_builder/resources.html')
+        
+    
+
 
 def build_question_view(request, custom_form_id):
     custom_forms = Custom_Form.objects.all()
@@ -37,6 +43,7 @@ def build_question_view(request, custom_form_id):
         build_question_form = Build_question_form()
        
     else:
+        
         build_question_form = Build_question_form(request.POST)
         duplicate = Question.objects.filter(question = request.POST['question'])
         if duplicate:
@@ -45,7 +52,9 @@ def build_question_view(request, custom_form_id):
                     'preview': img_src,
                     'custom_form_id': custom_form_id,
                     'warning' : "you've already asked that question"
-                })
+                    })
+        
+
         if build_question_form.is_valid(): 
            
             new_question = build_question_form.save()
@@ -565,19 +574,10 @@ def view_question_submitted(request, custom_form_id):
             if approved == False:
                 eligible = False
         programs_list[i]["eligible"] = eligible
-            
-    
-        
-
-
-
-
 
     income_level = False
     family_size = 0
-
    
-                        
 
     address_submitted = [{'fields' : ""}]
     if custom_form.question_order:
@@ -649,8 +649,8 @@ def custom_form_options(request, custom_form_id):
         'custom_form_id' : custom_form_id
     })
 
-def question_organizer(request, custom_form_id):
-
+def question_organizer(request, custom_form_id, order_or_remove):
+    
     if request.method == "POST":
         
         custom_form = Custom_Form.objects.get(id = custom_form_id)
@@ -659,7 +659,7 @@ def question_organizer(request, custom_form_id):
         
 
     custom_form = Custom_Form.objects.get(id = custom_form_id)
-    current_question_order = Custom_Form.question_order
+    current_question_order = custom_form.question_order
    
     question_array = current_question_order.split("/") 
     remove_form = Remove_form(question_array)
@@ -670,7 +670,8 @@ def question_organizer(request, custom_form_id):
 
     return render(request, 'form_builder/question_organizer.html',{
         'forms': q_dict,
-        'remove_form' : remove_form
+        'remove_form' : remove_form,
+        'order_or_remove' : order_or_remove
     })
 
 def question_remove(request, custom_form_id):

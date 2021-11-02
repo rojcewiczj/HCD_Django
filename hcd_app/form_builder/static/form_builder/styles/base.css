@@ -189,6 +189,9 @@ form{
   margin-right: 5%; 
   margin-left: 90px;
 }
+
+
+
 .back-button:hover {
   background-color: #114449;
   border-color: #114449;
@@ -199,9 +202,28 @@ form{
   margin-right: 130px;
 }
 
-.next-button{
-  margin-left: 100px;
-  margin-right: 165px;
+#n_btn{
+  background-color: rgb(181, 102, 10);
+  border-color: rgb(125, 116, 103);
+  color: rgb(232, 230, 227);
+  text-decoration-color: initial;
+  cursor: pointer;
+  font: inherit;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 0.5rem 1.5rem;
+  margin: 1.5rem 2.5rem;
+  background-color: #F39222;
+  border: 4px solid #114449;
+  color: white;
+  /* border-radius: 4px; overflow-x: 220; */
+  overflow-y: 306;
+  text-decoration: none;
+  float: right;
+  /* margin-top: 2%; */
+  margin-right: 5%;
+  width: 250px;
 }
 
 .lonely-submit{
@@ -313,3 +335,6 @@ ul{
  
 }
 
+#id_answer_format{
+  display: none;
+}
