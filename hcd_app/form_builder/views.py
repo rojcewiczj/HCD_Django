@@ -1,9 +1,8 @@
 
 from django.db.models.query import QuerySet
-from form_builder.models import Custom_Form, Question, Address
+from form_builder.models import Custom_Form, Question, Address,Program, Requirement, Statement
 from django.shortcuts import render, redirect
 from django.core import serializers
-
 from .question_order_selector import question_order_selector
 from .build_question_form import Build_question_form
 from .text_field_form import Text_field_form
@@ -505,8 +504,95 @@ def view_question_submitted(request, custom_form_id):
         "need_help" : {"call" : "", "email": ""},
         "eligible": True
     }
+  
     programs_list = [Weatherization, Lead_Mitigation, Rental_Preservation, Home_Improvement, Rental_Counseling, Money_Management, Homebuyer_education,]
-   
+    custom_programs = Program.objects.all()
+    
+    for program in custom_programs:
+        
+        new_program = {
+         "title" : program.title,
+        "description":
+            program.description,
+        "why_its_recommended":[],
+        "eligibility_requirements": [],
+        "additional_requirements": None,
+        "what_you_need_to_apply": 
+            None,
+        "what_to_expect_after_applying":
+            program.what_to_expect_after_applying,
+        "need_help" : {"call" : {'number':program.call}, "email":{'email' : program.email}},
+        "eligible": True
+        }
+        for statement in Statement.objects.all(): 
+           
+            if program in statement.programs.all():
+                
+                if statement.why_its_recommended:
+                    category = "why_its_recommended"
+                    new_recommended = [True]
+                    new_statement = {
+                        "statement": statement.statement,
+                        "requirements":[]
+                    }
+                    for req in Requirement.objects.all():
+                      
+                        if statement in req.statements.all():
+                            
+                            new_req = {
+                                "question": req.question,
+                                "answer_for_approval": req.answer_for_approval
+                            }
+                            
+                        new_statement["requirements"].append(new_req)
+                        
+                    new_recommended.append(new_statement)
+                    
+                elif statement.eligibility_requirements:
+                   
+                    category = "eligibility_requirements"
+                    new_recommended = [True]
+                    new_statement = {
+                        "statement": statement.statement,
+                        "requirements":[]
+                    }
+                    
+                    for req in Requirement.objects.all():
+                       
+                        if statement in req.statements.all():  
+                            
+                            new_req = {
+                                "question": req.question,
+                                "answer_for_approval": req.answer_for_approval
+                            }
+                            
+                        new_statement["requirements"].append(new_req)
+                    new_recommended.append(new_statement)
+
+                elif statement.additional_requirements:
+                    category = "additional_requirements"
+                    new_recommended = []
+                    new_statement = {
+                        "statement": statement.statement,
+                    }
+                    new_recommended.append(new_statement)
+                elif statement.what_you_need_to_apply:
+                    category = "what_you_need_to_apply"
+                    new_recommended = []
+                    new_statement = {
+                        "statement": statement.statement,
+                    }
+                    new_recommended.append(new_statement)
+                if category != "additional_requirements" or category != "what_you_need_to_apply":
+                    new_program[category] = new_recommended
+                else:
+                    new_program[category].append(new_recommended)
+
+        
+        programs_list.append(new_program)
+        print(programs_list[0]['why_its_recommended'], programs_list[-1]['why_its_recommended'])
+  
+
 
     custom_form = Custom_Form.objects.get(id = 5)
     questions_submitted = []
@@ -629,7 +715,7 @@ def view_question_submitted(request, custom_form_id):
    
     for i in range(0, len(program_list_view)):
         program_list_view[i].append(i)
-        print(program_list_view[i][8])
+       
     
     return render(request, 'form_builder/view_question_submitted.html',{
         "program_list" : program_list_view,
@@ -641,7 +727,6 @@ def view_question_submitted(request, custom_form_id):
     } )
 
 
-    
 
 def custom_form_options(request, custom_form_id):
     
