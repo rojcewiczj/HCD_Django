@@ -3,6 +3,8 @@ from django.forms import widgets
 from .models import Address, Question
 from django.forms.widgets import CheckboxSelectMultiple, TextInput
 
+# this file is not currently being used but the idea was to move all the form classes into this file
+
 answer_format_options = [
     ('text_field', "text field"),
     ('multiple_choice', "multiple choice"),
@@ -107,5 +109,7 @@ class Address_Form(forms.ModelForm):
         #         'placeholder': 'answer'
         #         }),
         # }
+
+
 
          

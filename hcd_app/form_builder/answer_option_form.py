@@ -1,7 +1,7 @@
 from django import forms
 
 
-
+# form for adding answer options to the multiple choice questions
 class Answer_option_form(forms.Form):
        
     def __init__(self, new_question):

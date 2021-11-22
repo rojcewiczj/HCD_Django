@@ -20,8 +20,10 @@
         <a href="{% url 'fill_out_form' 5 0 0 %}"><strong class="nav-active">Survey</strong></a>
         </div>
     </div> 
+    <!-- this is where all questions are displayed -->
     <header>Housing Assistance Quiz</header>
     <main>
+        <!-- the main thing here is looping the the forms dictionary, and rendering after considering the type of question -->
         {% for key, value in forms.items %}
         {% if current_form == key %}
       <article style="display: flex; align-items: center; flex-direction: column; justify-content: center;">

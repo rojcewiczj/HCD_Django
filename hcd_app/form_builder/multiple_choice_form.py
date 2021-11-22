@@ -3,6 +3,7 @@ from django.db.models import query
 from django.forms import TextInput
 from .models import Question
 
+# form for how to render multiple choice questions
 
 def Multiple_choice_helper(question):   
     options = []

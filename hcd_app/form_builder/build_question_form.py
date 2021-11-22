@@ -11,7 +11,7 @@ answer_format_options = [
 
 
 
-
+#currently images are being stored in image folder
 img_options = [
      ('None', 'None'),
     ('form_builder\images\B3041017803_d58730169a_b.jpeg', 'shower head'),
@@ -34,6 +34,7 @@ img_options = [
     ('form_builder\images\Wheelchair.png', "person in wheelchair")
 
 ]
+# form for building questions
 class Build_question_form(forms.ModelForm):
     answer_format = forms.MultipleChoiceField(
         choices= answer_format_options,

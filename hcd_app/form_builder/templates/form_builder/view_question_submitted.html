@@ -4,9 +4,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script >
     
-  
+    // this page controls the rendering of the programs after being compared to the question answers
 
-       
+    //    switch_collapse controls the functionality for expanding and closing the program views
        const switch_collapse = (program_clicked) => { 
             var button = document.getElementById(`button_text${program_clicked}`)
             var leftArrow = document.getElementById(`left-arrow${program_clicked}`)
@@ -63,7 +63,7 @@
     <header>Housing Assistance Quiz</header>
    
     <h2 style="margin: 0 auto; margin-top: 50px; margin-bottom: -20px;">You may be eligibly for the following program(s):</h2>
-     
+     <!-- loops the programs and renders them based on the location of the different categories in the program data structure -->
     {% for program in program_list %}
     {% if program.8.0 == True %}
     <div class="submitted-container{{program.9}}" id="submitted-container{{program.9}}" style="  background-color: #E5E5E5;

@@ -22,27 +22,29 @@ def index(request):
         "custom_forms":  custom_forms,
     })
 
-
+#not currently being used
 def resource_view(request, custom_form_id):
     
     return render(request, 'form_builder/resources.html')
         
     
 
-
+#sets up view for the question builder
 def build_question_view(request, custom_form_id):
+    #looks for all forms, should only be one currently
     custom_forms = Custom_Form.objects.all()
     custom_form = None
     img_src = None
+    #find specific form based on id
     for custom_form in custom_forms:
         if custom_form.id == custom_form_id:
             custom_form = custom_form
-
+    #if its a get request initialize a form
     if request.method == "GET":
         build_question_form = Build_question_form()
        
     else:
-        
+        #take the form input and check to see if theres and duplicate questions
         build_question_form = Build_question_form(request.POST)
         duplicate = Question.objects.filter(question = request.POST['question'])
         if duplicate:
@@ -53,11 +55,11 @@ def build_question_view(request, custom_form_id):
                     'warning' : "you've already asked that question"
                     })
         
-
+     
         if build_question_form.is_valid(): 
-           
+            
             new_question = build_question_form.save()
-           
+            # if the question is and address info question, you're essentially offering a seperate address form
             if request.POST['answer_format'] != 'address_form':
                 
                 if len(Custom_Form.question_order) == 0:
@@ -93,7 +95,7 @@ def build_question_view(request, custom_form_id):
     })
 
 
-    
+# here we handle building a multiple choice questions
 def build_question_select_choices(request, custom_form_id, question_id):
     (question_id)
     question_to_edit = Question.objects.get(id = question_id)
@@ -120,15 +122,16 @@ def build_question_select_choices(request, custom_form_id, question_id):
     })
 
 
-
+# question building success screen not being used
 def build_question_success(request, custom_form_id):
     return render(request, 'form_builder/build_question_success.html', {
         'custom_form_id': custom_form_id
     })        
 
 
-        
+# handeling when you're actually moving through the form, answering questions
 def fill_out_form(request, custom_form_id, current_form , back): 
+
     custom_form = Custom_Form.objects.get(id = 5)
     if custom_form.question_order == "" or custom_form.question_order is None:
         return redirect("build_question_view", custom_form_id = custom_form_id)
@@ -136,11 +139,12 @@ def fill_out_form(request, custom_form_id, current_form , back):
     current_form_int = int(current_form)
         
     if request.method == "POST":
-       
+        #system for handling back and forward in the form, not really effective and needs rework
         if back == '1':
             current_form_int -= 1
         elif back == '0':
             current_form_int += 1
+            #try except for handling difference in an address form and othe question forms
             try:
                 question_to_edit = Question.objects.get(question = request.POST["question"])
                 
@@ -157,7 +161,7 @@ def fill_out_form(request, custom_form_id, current_form , back):
                 if address_form.is_valid(): 
                     address_form.save()
            
-        
+    #building the question order is pased on the question order string, which needs to be split into and array    
     current_form = str(current_form_int) 
     question_order = {}
     current_custom_form = Custom_Form.objects.get(id = custom_form_id)
@@ -168,7 +172,7 @@ def fill_out_form(request, custom_form_id, current_form , back):
     
     forms = {}
     questions = Question.objects.all()
-    
+    #checking the question format to decide how to show the question
     for q in questions:
         a_format = q.answer_format
         question_form = ""
@@ -196,11 +200,55 @@ def fill_out_form(request, custom_form_id, current_form , back):
         'current_form' : current_form,
         'custom_form_id': custom_form_id
     })
+# sketch for a view function for displaying a create program form
+def create_program(request):
+    if request.method == "GET":
+        program_form = Program_form()
+    if request.method == "POST":
+        program_form = Program_form(request.POST)
+        if program_form.is_valid():
+            program_form.save()
+        return redirect('create_statement', program_form.id)
 
-
-
-def view_question_submitted(request, custom_form_id):
+    return render(request, 'form_builder/create_program.html', {
+        'program_form' : program_form
+    })
+# sketch for a view function for displaying a create statement form
+def create_statement(request, program_id):
     
+    if request.method == "GET":
+        statement_form = Statement_form()
+    if request.method == "POST":
+        statement_form = Statement_form(request.POST)
+        program = Program.objects.get(id = program_id)
+        statement_form.programs.add(program)
+        return redirect('create_requirement', statement_form.id)
+        
+    return render(request, 'form_builder/create_statement.html', {
+        'statement_form' : statement_form
+    })
+# sketch for a view function for displaying a create requierment form
+def create_requirement(request, statement_id):
+
+    questions = Question.objects.all()
+    if request.method == "GET":
+        requirement_form = Requirement_form(questions)
+    if request.method == "POST":
+        requirement_form = Requirement_form(questions ,request.POST)
+        statement = Statement.objects.get(id = statement_id)
+        requirement_form.statements.add(statement)
+        return redirect('create_requirement', statement_id)
+        
+    return render(request, 'form_builder/create_requirement.html', {
+        'requirment_form' : requirement_form
+    })
+
+  
+
+
+# function for displaying final answer results
+def view_question_submitted(request, custom_form_id):
+    #a lot of this is hardcoding for the basic programs given in the figma
     req_energy = {
         "question": "Does the home consume a lot of energy, leading to costly energy bills?",
         "answer_for_approval" : "yes"
@@ -397,6 +445,7 @@ def view_question_submitted(request, custom_form_id):
     email_rental = {
         "email" : "mcclelland@uhinc.org"
     }
+    #progams are built as objects, where statements have requirements which tie those statements to certain que4stions and answers
     Weatherization = {
         "title": "Weatherization",
         "description": 
@@ -505,9 +554,12 @@ def view_question_submitted(request, custom_form_id):
         "eligible": True
     }
   
+  #all programs a added to a list for iteratting through
     programs_list = [Weatherization, Lead_Mitigation, Rental_Preservation, Home_Improvement, Rental_Counseling, Money_Management, Homebuyer_education,]
     custom_programs = Program.objects.all()
     
+    #here we build the custom programs based on whats stored in the db
+    # programs have statements, statements have requirements which are tied to questions
     for program in custom_programs:
         
         new_program = {
@@ -583,14 +635,15 @@ def view_question_submitted(request, custom_form_id):
                         "statement": statement.statement,
                     }
                     new_recommended.append(new_statement)
-                if category != "additional_requirements" or category != "what_you_need_to_apply":
+                if category == "additional_requirements" or category == "what_you_need_to_apply":
                     new_program[category] = new_recommended
+                    print(category)
                 else:
                     new_program[category].append(new_recommended)
 
         
         programs_list.append(new_program)
-        print(programs_list[0]['why_its_recommended'], programs_list[-1]['why_its_recommended'])
+        
   
 
 
@@ -600,14 +653,15 @@ def view_question_submitted(request, custom_form_id):
     questions = Question.objects.all()
 
     QandA = {} # added for test
-
+    #at this point we have to look athe the question and answers 
     for question in questions:
         if question.answer is not None:
             questions_submitted.append(question)
             QandA[question.question] = question.answer  #added for test
 
     address_submitted = [{'fields' : ""}]
-
+    
+    # we have to look any address form and figure out whats in the fields
     if custom_form.question_order:
         array_order = custom_form.question_order.split("/")
         (array_order)
@@ -615,7 +669,7 @@ def view_question_submitted(request, custom_form_id):
             address_submitted = serializers.serialize( "python", Address.objects.all() )
             QandA["address_form"] = address_submitted #added for test
         
-
+     
     for i in range(len(programs_list)):
         recommend_program = True
         for statement in programs_list[i]["why_its_recommended"]:
@@ -636,6 +690,7 @@ def view_question_submitted(request, custom_form_id):
                         recommend_program = False
         
         eligible = True
+        # compliated system for checking answers against expectations for answers
         for j in range(len(programs_list[i]["eligibility_requirements"])):
             approved = True
             if len(programs_list[i]["eligibility_requirements"][j]) > 0:
@@ -727,13 +782,14 @@ def view_question_submitted(request, custom_form_id):
     } )
 
 
-
+#nothing at the moment
 def custom_form_options(request, custom_form_id):
     
     return render(request, 'form_builder/custom_form_options.html',{
         'custom_form_id' : custom_form_id
     })
 
+# function controlling the question organizer and question removal
 def question_organizer(request, custom_form_id, order_or_remove):
     
     if request.method == "POST":
