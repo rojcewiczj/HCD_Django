@@ -21,6 +21,7 @@
         </div>
     </div>
     <main>
+        <!-- page for adding options for multiple choice questions -->
         <article>
         <form action="{% url 'build_question_select_choices' 5 question_id %}" method="POST">
             {% csrf_token %}

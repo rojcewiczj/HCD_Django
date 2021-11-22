@@ -8,6 +8,9 @@ from django.urls import path
 urlpatterns = [
     path('form_builder/', views.index, name="all-forms"), #our-domain.com/form_builder,
     path('form_builder/form_options/<custom_form_id>', views.custom_form_options, name="form_options"),
+    path('form_builder/create_program/', views.create_program, name="create_program"),
+    path('form_builder/create_statement/<program_id>', views.create_statement, name="create_statement"),
+    path('form_builder/create_requirement/<statement_id>', views.create_statement, name="create_statement"),
     path('form_builder/resources/<custom_form_id>', views.resource_view, name="resource_view"),
     path('form_builder/resources/build_question/<custom_form_id>', views.build_question_view, name="build_question_view"),
     path('form_builder/fill_question/<custom_form_id>/<current_form>/<back>', views.fill_out_form, name="fill_out_form"),
